@@ -1,0 +1,16 @@
+/* Direct internal tools: no canvas, page background, iframe or duplicate header. */
+:host{display:block;min-width:0;color:var(--text);font:inherit;--cx-text:var(--text);--cx-title:var(--title);--cx-muted:var(--muted);--cx-subtitle:var(--muted);--cx-bg-text:var(--text);--cx-bg-muted:var(--muted);--cx-bg:var(--surface);--cx-surface:var(--surface);--cx-surface-strong:var(--surface-strong);--cx-surface-soft:var(--surface);--cx-border:var(--stroke);--cx-border-strong:var(--stroke);--cx-accent:var(--primary);--cx-accent-strong:var(--primary);--cx-accent-ink:var(--primary);--cx-accent-text:var(--bg);--cx-positive:var(--primary);--cx-positive-text:var(--bg);--cx-warning:#d99b36;--cx-danger:#d96070;--cx-shadow:transparent;--cx-font-family:inherit;--cx-base-font-size:15px;--cx-card-radius:18px;--cx-control-radius:12px;--cx-input-radius:12px;--cx-border-width:1px;--cx-card-shadow:none}
+.native-tool-body{display:block;min-width:0;background:transparent!important;color:var(--text);font:inherit;line-height:1.5}
+.native-tool-body [hidden]{display:none!important}
+.native-tool-body :is(.local-direct-top,.pdf-screen-top,.converter-screen-top,.video-screen-top,.local-offline-notice,.pdf-privacy-note,.converter-privacy-note,.video-network-note){display:none!important}
+.native-tool-body :is(.local-tool-screen,.pdf-tool-screen,.converter-tool-screen,.video-tool-screen,.generator-data-screen){display:grid;gap:20px;border:0!important;border-radius:0!important;padding:0!important;margin:0!important;background:transparent!important;box-shadow:none!important;min-width:0}
+.native-tool-body :is(.name-generator-panel,.cxprod-panel,.converter-screen-body){border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;border-radius:0!important}
+.native-tool-body :is(input,textarea,select,button){font-family:inherit}
+.native-tool-body :is(input,textarea,select){color:var(--text);background:var(--surface-strong);border-color:var(--stroke);font-size:14px}
+.native-tool-body :is(.primary-button,.converter-primary-button){color:var(--bg);background:var(--primary);border-color:var(--primary)}
+.native-tool-body :is(.ghost-button,.secondary-button){color:var(--text);border-color:var(--stroke)}
+.native-tool-body :is(.calculator-display,.calculator-key,.calculator-mode-button,.calculator-shell){border-color:var(--stroke)}
+.native-tool-body :is(.local-direct-tools-container,.converter-tools-container){min-width:0}
+.native-tool-body[data-effects="off"] *,.native-tool-body[data-quality="eco"] *{animation:none!important;transition:none!important;box-shadow:none!important;backdrop-filter:none!important}
+@media(prefers-reduced-motion:reduce){.native-tool-body *{animation:none!important;transition:none!important}}
+@media(max-width:640px){.native-tool-body .cxprod-columns{grid-template-columns:minmax(0,1fr)}.native-tool-body .notes-grid{grid-template-columns:minmax(0,1fr)}}

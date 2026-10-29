@@ -1,0 +1,63 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {normalizeUi,DEFAULT_UI} from '../assets/real-state.mjs';
+import {normalizeFeatures,browserFeatureMarkup,FEATURE_STORAGE_KEY} from '../assets/browser-features.mjs';
+import vm from 'node:vm';
+const read=x=>readFileSync(new URL('../'+x,import.meta.url),'utf8');
+const manifest=JSON.parse(read('manifest.json'));
+assert.equal(manifest.version,'0.3.18');
+assert.equal(manifest.content_scripts.length,3);
+assert(manifest.content_scripts.some(x=>x.js?.includes('page-features.js')));
+assert(manifest.content_scripts.some(x=>x.js?.includes('instagram-progress.js') && x.matches[0]==='https://www.instagram.com/*'));
+assert.equal(DEFAULT_UI.organizeSidebar,true);
+assert.equal(normalizeUi({organizeSidebar:false}).organizeSidebar,false);
+assert.equal(normalizeUi({}).organizeSidebar,true);
+assert.deepEqual(normalizeFeatures({}),{pip:false,instagramProgress:false});
+assert.deepEqual(normalizeFeatures({pip:true,instagramProgress:true}),{pip:true,instagramProgress:true});
+const dummyIcon=()=>'<svg></svg>';
+assert(browserFeatureMarkup('pip',{pip:false},dummyIcon).includes('aria-checked="false"'));
+assert(browserFeatureMarkup('instagramProgress',{instagramProgress:true},dummyIcon).includes('aria-checked="true"'));
+assert(browserFeatureMarkup('darkPage',{},dummyIcon).includes('botão direito'));
+const shell=read('shell.js');
+for(const tool of ['utility-pip','utility-instagram-progress','utility-dark-page']) assert(shell.includes(`id:'${tool}'`));
+assert(shell.includes('data-action="toggle-organize-sidebar"'));
+assert(shell.includes('state.ui.organizeSidebar===false?[...WORK_CATEGORIES,...FUN_CATEGORIES]'));
+const bg=read('background.js');
+assert(bg.includes("id:'caixota-force-dark'")&&bg.includes("id:'caixota-restore-light'"));
+assert(bg.includes('chrome.storage.session'));
+assert(bg.includes('new URL(tab.url).origin===saved.origin'));
+assert(!bg.includes('chrome.contextMenus.create();'));
+// Test the independently written content script with a minimal browser-like stub.
+const listeners={};
+let storedChange;
+const classes=new Set();
+let installedPiPAction;
+const root={classList:{toggle(c,on){on?classes.add(c):classes.delete(c);}},dataset:{},appendChild(){}};
+const doc={documentElement:root,visibilityState:'visible',pictureInPictureEnabled:true,pictureInPictureElement:null,hasFocus:()=>true,
+ addEventListener(n,fn){listeners['document:'+n]=fn;},removeEventListener(){},querySelectorAll:()=>[],getElementById:()=>null};
+const chrome={storage:{local:{get:async()=>({[FEATURE_STORAGE_KEY]:{pip:false}})},onChanged:{addListener(fn){storedChange=fn;}}},runtime:{onMessage:{addListener(fn){listeners.message=fn;}}}};
+const context={chrome,document:doc,navigator:{mediaSession:{setActionHandler:(n,fn)=>installedPiPAction=fn}},window:{addEventListener(n,fn){listeners['window:'+n]=fn;}},setTimeout,clearTimeout,Date,console};
+vm.runInNewContext(read('page-features.js'),context,{filename:'page-features.js'});
+let result;listeners.message({type:'CAIXOTA_PAGE_DARK_0310',enabled:true},{},(v)=>result=v);
+assert(result.ok&&result.enabled);assert(classes.has('cx0310-force-dark'));
+listeners.message({type:'CAIXOTA_PAGE_DARK_0310',enabled:false},{},v=>result=v);
+assert(!result.enabled&&!classes.has('cx0310-force-dark'));
+storedChange({[FEATURE_STORAGE_KEY]:{newValue:{pip:true}}},'local');
+assert.equal(typeof installedPiPAction,'function');
+storedChange({[FEATURE_STORAGE_KEY]:{newValue:{pip:false}}},'local');
+assert.equal(installedPiPAction,null);
+console.log('OK 0.3.10: menu escuro liga/desliga, flags desligadas por padrão, PiP, catálogo e pastas.');
+// The Instagram bar now lives above the player in its own fixed root,
+// not inside the video's wrapper. Browser-level pointer tests live in
+// tests/browser-instagram.py (Playwright, isolated fake video).
+const ig=read('instagram-progress.js');
+const style=read('instagram-progress.css');
+assert(ig.includes("document.documentElement.appendChild(root)"));
+assert(ig.includes("bar.setPointerCapture(event.pointerId)"));
+assert(ig.includes("activeVideo.currentTime = desired"));
+assert(ig.includes("timestamp(current)") && ig.includes("timestamp(total)"));
+assert(style.includes('cx-ig-thumb') && style.includes('cx-ig-time'));
+assert(!read('page-features.js').includes('cx0310-pip-chip'));
+assert(!read('page-features.css').includes('cx0310-pip-chip'));
+assert(!read('assets/browser-features.mjs').includes('botão PiP que aparece sobre o vídeo'));
+console.log('OK 0.3.10.1: barra externa interativa e PiP sem botão sobre o player.');

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08090a">
+  <title>Caixota · Teste os botões contextuais</title>
+  <link rel="stylesheet" href="context-test.css">
+  <script src="context-demo.js" defer></script>
+  <script type="module" src="context-test-page.mjs"></script>
+</head>
+<body>
+  <div class="demo-layout">
+    <header class="demo-topbar">
+      <a href="panel.html#home" class="demo-brand"><img src="icons/icon48.png" alt="" width="42" height="42"><strong>Caixota <small>TESTE CONTEXTUAL</small></strong></a>
+      <a class="demo-return" href="panel.html#home">← Voltar à Caixota</a>
+    </header>
+    <main>
+      <div class="demo-intro">
+        <span class="demo-eyebrow"><span class="demo-dot"></span> TESTE RÁPIDO · SEM CADASTRO</span>
+        <h1>Experimente a Caixota<br><em>sem sair desta página.</em></h1>
+        <p>Dois testes simples para descobrir como o botão da Caixota funciona em sites. Selecione um texto ou clique numa imagem e veja o que aparece.</p>
+        <div class="demo-tags"><span>✓ Funciona offline</span><span>✓ Sem enviar seus arquivos</span><span>✓ Segue seu tema</span></div>
+      </div>
+      <div class="demo-grid">
+        <section class="demo-test">
+          <div class="demo-test-head"><span class="demo-step">01</span><div><span class="demo-eyebrow">TEXTO</span><h2>Selecione uma frase</h2></div></div>
+          <p>Passe o mouse por este trecho e selecione algumas palavras. O botão da Caixota deverá aparecer perto da sua seleção.</p>
+          <blockquote class="demo-selectable">Toda grande ideia começa com uma pequena curiosidade. 💙</blockquote>
+          <p class="demo-tip">💡 Dica: clique no botão flutuante para explorar Tradutor, Dicionário e outras ferramentas.</p>
+        </section>
+        <section class="demo-test">
+          <div class="demo-test-head"><span class="demo-step">02</span><div><span class="demo-eyebrow">IMAGEM</span><h2>Clique na imagem</h2></div></div>
+          <p>Clique na ilustração abaixo. O menu contextual permite acessar ações para imagens, como leitura de QR Code e informações.</p>
+          <img class="demo-image" src="assets/context-demo-image.svg" alt="Ilustração de formas geométricas suaves para testar o menu de imagem" width="520" height="280">
+          <p class="demo-tip">💡 Dica: clique direto na imagem, não no texto ao redor.</p>
+        </section>
+      </div>
+      <aside class="demo-footer-note"><span aria-hidden="true">ⓘ</span><div><strong>Este é um espaço de testes.</strong><p>Os botões são uma demonstração da experiência contextual. Nenhum documento pessoal é enviado para um servidor nesta página.</p></div></aside>
+    </main>
+    <footer class="demo-footer">Caixota 0.3.15 · Feito para experimentar sem complicação.</footer>
+  </div>
+</body>
+</html>

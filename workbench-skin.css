@@ -1,0 +1,202 @@
+/* Functional processing workspace shown inside the new Caixota 0.3.0 shell.
+   The old engines remain unchanged and accessible for compatibility. */
+html,body.cx-workbench{min-height:100%;height:auto;overflow-x:hidden}
+body.cx-workbench{background:transparent!important;overflow-y:auto!important}
+body.cx-workbench .app-header,
+body.cx-workbench .sidebar,
+body.cx-workbench .panel-version-corner,
+body.cx-workbench .tools-view > .page-heading,
+body.cx-workbench .category-tabs,
+body.cx-workbench .category-hero,
+body.cx-workbench .tool-section-heading,
+body.cx-workbench .tools-group > .tools-grid,
+body.cx-workbench .home-heading{display:none!important}
+body.cx-workbench .app-main{width:100%!important;max-width:none!important;margin:0!important;padding:20px 26px 100px!important}
+body.cx-workbench .app-view.is-active{animation:none}
+body.cx-workbench .tools-group.is-active{animation:none}
+body.cx-workbench #generatorCatalogPane:not([hidden]),
+body.cx-workbench #textCatalogPane:not([hidden]){display:none!important}
+body.cx-workbench .local-tool-screen,
+body.cx-workbench .pdf-tool-screen,
+body.cx-workbench .video-tool-screen,
+body.cx-workbench .converter-tool-screen{animation:none;max-width:100%;margin-inline:auto}
+body.cx-workbench :where(.settings-surface,.pdf-screen-body,.converter-screen-body,.video-tool-screen,.local-tool-screen,.productivity-tool-screen){border-radius:20px}
+body.cx-workbench :where(button,select,input,textarea){font-family:inherit}
+body.cx-workbench[data-theme="oled"]{--cx-bg:#0c0c0f;--cx-surface:#18191d;--cx-surface-strong:#24262c;--cx-text:#f4f5f7;--cx-muted:#adb1b9;--cx-accent:#98c6d9}
+body.cx-workbench[data-theme="light"]{--cx-bg:#eff4f8;--cx-surface:#ffffff;--cx-surface-strong:#f8fbff;--cx-text:#1b3346;--cx-muted:#62798b;--cx-accent:#3e8aa9}
+@media(max-width:720px){body.cx-workbench .app-main{padding:12px 12px 80px!important}}
+
+/* v0.3.1: real visual parity between shell and legacy tool engines.
+   Tokens are on body, where legacy panel.css normally reads its palette. */
+body.cx-workbench[data-theme-v3="glass-light"],body.cx-workbench[data-theme-v3="warm"],body.cx-workbench[data-theme-v3="aero"],body.cx-workbench[data-theme-v3="retro-90"]{color-scheme:light}
+body.cx-workbench[data-theme-v3="oled"],body.cx-workbench[data-theme-v3="glass-dark"]{color-scheme:dark}
+body.cx-workbench[data-theme-v3="glass-light"]{--cx-bg:#e8eff5;--cx-surface:#fff;--cx-surface-strong:#f4f8fb;--cx-text:#192c3c;--cx-muted:#5b7082;--cx-accent:#3d819e}
+body.cx-workbench[data-theme-v3="glass-dark"]{--cx-bg:#151b22;--cx-surface:#273440;--cx-surface-strong:#354251;--cx-text:#f6f8fa;--cx-muted:#bdc7d0;--cx-accent:#a8d6e8}
+body.cx-workbench[data-theme-v3="oled"]{--cx-bg:#050506;--cx-surface:#17171a;--cx-surface-strong:#232327;--cx-text:#f4f5f6;--cx-muted:#a9abb2;--cx-accent:#c4d8e1}
+body.cx-workbench[data-theme-v3="warm"]{--cx-bg:#eae4d9;--cx-surface:#fffaf2;--cx-surface-strong:#f5eee4;--cx-text:#342f2a;--cx-muted:#716b62;--cx-accent:#648876}
+body.cx-workbench[data-theme-v3="aero"]{--cx-bg:#b8dff2;--cx-surface:#ecfaff;--cx-surface-strong:#d9f2ff;--cx-text:#173c55;--cx-muted:#416c82;--cx-accent:#0775b6}
+body.cx-workbench[data-theme-v3="retro-90"]{--cx-bg:#008080;--cx-surface:#c0c0c0;--cx-surface-strong:#d4d4d4;--cx-text:#101010;--cx-muted:#454545;--cx-accent:#000080}
+body.cx-workbench[data-theme-v3] {color:var(--cx-text)!important;background:var(--cx-bg)!important;--text:var(--cx-text);--title:var(--cx-text);--muted:var(--cx-muted);--primary:var(--cx-accent);--surface:var(--cx-surface);--surface-strong:var(--cx-surface-strong);--surface-solid:var(--cx-surface);--line:color-mix(in srgb,var(--cx-text) 17%,transparent);--stroke:color-mix(in srgb,var(--cx-text) 22%,transparent)}
+body.cx-workbench[data-theme-v3] :is(.local-tool-screen,.pdf-tool-screen,.video-tool-screen,.converter-tool-screen,.productivity-tool-screen,.settings-surface,.pdf-screen-body,.converter-screen-body,.tool-detail-screen){background:var(--cx-surface)!important;color:var(--cx-text)!important;border-color:var(--line)!important}
+/* Do not force all descendants to inherit color; that breaks contrast on buttons. */
+body.cx-workbench[data-theme-v3] :is(input,textarea,select){background:var(--cx-surface-strong)!important;color:var(--cx-text)!important;border-color:var(--line)!important}
+body.cx-workbench[data-theme-v3] :is(button){color:var(--cx-text)}
+/* Complete semantic mapping for all legacy widgets, including background text.
+   Legacy panel.css uses these names independently of the new shell's tokens. */
+body.cx-workbench[data-theme-v3]{
+ --cx-bg-text:var(--cx-text);--cx-bg-muted:var(--cx-muted);
+ --cx-title:var(--cx-text);--cx-subtitle:var(--cx-muted);
+ --cx-surface-soft:var(--cx-surface-strong);
+ --cx-border:color-mix(in srgb,var(--cx-text) 22%,transparent);
+ --cx-border-strong:color-mix(in srgb,var(--cx-text) 34%,transparent);
+ --cx-accent-strong:var(--cx-accent);
+ --cx-accent-ink:var(--cx-accent);
+ --cx-shadow:color-mix(in srgb,var(--cx-bg) 18%,transparent);
+ --cx-glow:transparent;
+}
+body.cx-workbench[data-theme-v3] .app-view:where(.is-active),
+body.cx-workbench[data-theme-v3] :is(.tool-details-panel,.pdf-screen,.video-tool-body,.local-tool-body,.tool-screen,.media-editor-shell){
+ color:var(--cx-text)!important;background:var(--cx-surface)!important;
+}
+body.cx-workbench[data-theme-v3] :is(.tool-screen h2,.tool-screen h3,.local-tool-screen h2,.pdf-tool-screen h2,.video-tool-screen h2,.converter-tool-screen h2),
+body.cx-workbench[data-theme-v3] :is(.field>span,.form-field>span){color:var(--cx-text)!important}
+body.cx-workbench[data-theme-v3] :is(.info-note,.tool-help,.tool-hint,.tool-status,.field small){color:var(--cx-muted)!important}
+body.cx-workbench[data-theme-v3] :is(input,select,textarea)::placeholder{color:var(--cx-muted)!important;opacity:.8}
+
+/* 0.3.2 legacy integration: a genuine workspace, not a full nested settings page. */
+html:has(body.cx-workbench){font-size:16px;scroll-behavior:auto!important}
+body.cx-workbench{font-family:var(--cx-font-family)!important;font-size:15px;line-height:1.5;letter-spacing:normal;-webkit-text-stroke:0!important;text-shadow:none!important}
+body.cx-workbench .app-main{padding:12px 18px 65px!important}
+body.cx-workbench [data-view="tools"]>.page-heading{display:none!important}
+body.cx-workbench .local-direct-top{gap:12px}
+body.cx-workbench .local-tool-screen :is(h2,h3,h4),body.cx-workbench .pdf-tool-screen :is(h2,h3,h4),body.cx-workbench .video-tool-screen :is(h2,h3,h4){text-shadow:none!important;-webkit-text-stroke:0!important;letter-spacing:normal}
+body.cx-workbench[data-theme-v3]{
+ --cx-font-family:var(--workbench-font,system-ui,"Segoe UI",Arial,sans-serif);
+ --cx-accent-text:#ffffff;--cx-card-shadow:none;--cx-glow:transparent;
+}
+body.cx-workbench[data-theme-v3="glass-dark"],body.cx-workbench[data-theme-v3="oled"]{--cx-accent-text:#10212b;--cx-accent-ink:#b8d6e4}
+body.cx-workbench[data-theme-v3="aero"]{--cx-accent-text:#fff}
+body.cx-workbench[data-theme-v3] :is(.app-main,.app-view,.tools-group){background:transparent!important;color:var(--cx-text)!important}
+/* Scoped semantic tokens win over hard-coded old theme colors, without forcing
+   light text into light badges or onto primary buttons. */
+body.cx-workbench[data-theme-v3] :is(.local-tool-screen,.pdf-tool-screen,.video-tool-screen,.converter-tool-screen,.productivity-tool-screen,.settings-surface,.pdf-screen-body,.converter-screen-body,.tool-detail-screen,.caixota-wheel-dialog){background:var(--cx-surface)!important;color:var(--cx-text)!important;border-color:var(--cx-border)!important}
+body.cx-workbench[data-theme-v3] :is(.local-tool-screen,.pdf-tool-screen,.video-tool-screen,.converter-tool-screen,.productivity-tool-screen) :is(p,small,label){color:var(--cx-text)}
+body.cx-workbench[data-theme-v3] :is(.local-direct-heading p,.local-generator-disclaimer,.name-generator-notice,.cx-muted,.tool-hint,.local-offline-copy small,.form-field small){color:var(--cx-muted)!important}
+body.cx-workbench[data-theme-v3] :is(.primary-button,.caixota-wheel-dialog>.primary-button,.caixota-wheel-spin,.calc-equal){background:var(--cx-accent)!important;color:var(--cx-accent-text)!important;border:1px solid var(--cx-border)!important;text-shadow:none!important;box-shadow:0 6px 14px rgba(0,0,0,.12)!important}
+body.cx-workbench[data-theme-v3] .caixota-wheel-dialog strong{color:var(--cx-text)!important;text-shadow:none!important}
+body.cx-workbench[data-theme-v3] .caixota-wheel-dialog{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:0 15px 38px rgba(0,0,0,.24)!important}
+body.cx-workbench[data-theme-v3] .caixota-wheel-overlay{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(0,0,0,.60)!important}
+body.cx-workbench[data-theme-v3] :is(.local-tool-screen,.video-tool-screen,.pdf-tool-screen,.converter-tool-screen,.productivity-tool-screen){animation:none!important;box-shadow:none!important}
+body.cx-workbench[data-theme-v3] :is(.app-main,.local-tool-screen,.local-direct-tools-container){contain:style}
+body.cx-workbench[data-theme-v3] :is(button,input,textarea,select){font-family:var(--cx-font-family)!important;text-shadow:none!important;-webkit-text-stroke:0!important}
+body.cx-workbench[data-theme-v3] button{min-height:34px}
+body.cx-workbench[data-theme-v3="oled"]{--cx-bg:#000;--cx-surface:#0c0c0e;--cx-surface-strong:#171719;--cx-text:#f3f3f4;--cx-muted:#aaaab0;--cx-border:rgba(255,255,255,.14)}
+body.cx-workbench[data-theme-v3="aero"]{--cx-surface:#ebf9ff;--cx-surface-strong:#d9f1fb;--cx-text:#173c55;--cx-muted:#426a7d}
+@media(max-width:720px){body.cx-workbench .app-main{padding:10px 10px 35px!important}}
+
+/* v0.3.3 — The functional engines are rendered as a focused tool canvas.
+   No nested navigation, duplicate titles, or tiny legacy centered column. */
+html:has(body.cx-workbench){height:100%;min-height:100%;background:var(--cx-bg,#101114)!important}
+body.cx-workbench[data-theme-v3]{min-height:100%;width:100%;margin:0;overflow-x:hidden!important;background:var(--cx-bg)!important;color:var(--cx-text)!important}
+body.cx-workbench .app-main{display:block!important;box-sizing:border-box;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:clamp(18px,3vw,38px) clamp(18px,4vw,54px) 72px!important}
+body.cx-workbench [data-view="tools"],body.cx-workbench .tools-group.is-active,
+body.cx-workbench :is(#pdfToolsContainer,#videoToolsContainer,#imageToolsContainer,#textDirectToolsContainer,#generatorDirectToolsContainer,.pdf-tools-container,.video-tools-container,.converter-tools-container,.local-direct-tools-container,.productivity-tool-screen){width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;box-sizing:border-box}
+body.cx-workbench :is(.local-tool-screen,.pdf-tool-screen,.video-tool-screen,.converter-tool-screen,.productivity-tool-screen){width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:clamp(18px,2.4vw,30px)!important;gap:22px!important;border:1px solid var(--cx-border)!important;border-radius:23px!important;background:var(--cx-surface)!important;box-shadow:0 12px 36px rgba(0,0,0,.09)!important}
+body.cx-workbench :is(.local-direct-top,.pdf-screen-top,.converter-screen-top,.video-screen-top){display:block!important;margin:0!important;padding:0 0 20px!important;border-bottom:1px solid var(--cx-border)!important}
+/* The outer shell already supplies the title and the X; preserve secondary information. */
+body.cx-workbench :is(.local-direct-back,.pdf-back-button,.converter-back-button,.video-back-button){display:none!important}
+body.cx-workbench :is(.local-direct-heading,.pdf-screen-heading,.converter-screen-heading,.video-screen-heading){width:100%;min-width:0!important;text-align:left!important;margin:0!important;display:grid!important;gap:7px}
+body.cx-workbench :is(.local-direct-heading,.pdf-screen-heading,.converter-screen-heading,.video-screen-heading) h2{margin:0!important;font-size:clamp(20px,2vw,27px)!important;line-height:1.24!important;font-weight:750!important;color:var(--cx-text)!important;letter-spacing:-.025em!important}
+body.cx-workbench :is(.local-direct-heading,.pdf-screen-heading,.converter-screen-heading,.video-screen-heading) p{margin:0!important;font-size:13px!important;line-height:1.65!important;color:var(--cx-muted)!important;max-width:80ch!important}
+body.cx-workbench :is(.pdf-privacy-note,.local-offline-notice,.video-network-note){padding:14px 17px!important;gap:12px!important;border-radius:14px!important;box-shadow:none!important}
+body.cx-workbench :is(.pdf-screen-body,.converter-screen-body,.video-tool-body,.name-generator-panel,.visual-calculator-panel){min-width:0!important;width:100%!important;max-width:none!important;margin:0!important}
+body.cx-workbench .visual-calculator-panel{max-width:540px!important;margin-inline:auto!important}
+body.cx-workbench :is(.pdf-screen-body,.converter-screen-body){padding:clamp(16px,2vw,26px)!important;background:var(--cx-surface-strong)!important}
+body.cx-workbench :is(button,input,select,textarea){font-size:max(12px,1em);line-height:1.35;letter-spacing:normal}
+body.cx-workbench :is(.pdf-screen-body,.local-tool-screen,.video-tool-screen) :is(p,small){line-height:1.5}
+body.cx-workbench .caixota-wheel-dialog :is(.primary-button,.ghost-button,.caixota-wheel-close){min-height:42px!important}
+body.cx-workbench :is(.caixota-wheel-dialog,.caixota-wheel-dialog *){box-sizing:border-box}
+body.cx-workbench .caixota-wheel-dialog :is(button,[role="button"]){font-size:14px!important;line-height:1.3!important}
+body.cx-workbench .caixota-wheel-dialog :is(.caixota-wheel-close,.caixota-wheel-dialog-close){display:grid!important;place-items:center!important;padding:0!important;width:39px!important;height:39px!important;color:var(--cx-text)!important;border-radius:50%!important}
+body.cx-workbench .caixota-wheel-dialog :is(.caixota-wheel-close,.caixota-wheel-dialog-close) svg{display:block;margin:auto}
+body.cx-workbench[data-theme-v3="oled"]{--cx-bg:#070709;--cx-surface:#151518;--cx-surface-strong:#202023}
+@media(max-width:640px){body.cx-workbench .app-main{padding:12px 12px 34px!important}body.cx-workbench :is(.local-tool-screen,.pdf-tool-screen,.video-tool-screen,.converter-tool-screen){padding:16px!important;gap:16px!important}}
+/* Headings are owned by the outer dialog; avoid repeating the same large title. */
+body.cx-workbench :is(.local-direct-heading,.pdf-screen-heading,.converter-screen-heading,.video-screen-heading) h2{display:none!important}
+body.cx-workbench :is(.local-direct-heading,.pdf-screen-heading,.converter-screen-heading,.video-screen-heading) :is(.eyebrow,.local-direct-kicker){display:block;margin:0 0 3px!important;font-size:10px!important;letter-spacing:.1em!important;color:var(--cx-accent)!important}
+body.cx-workbench :is(.local-direct-heading,.pdf-screen-heading,.converter-screen-heading,.video-screen-heading) p{font-size:13.5px!important}
+/* v0.3.7: Calculadora com corpo e teclado próprios, sem parecer um formulário. */
+body.cx-workbench .visual-calculator-panel{max-width:460px!important;background:linear-gradient(155deg,var(--cx-surface-strong),var(--cx-surface))!important;border:1px solid var(--cx-border)!important;padding:20px!important;border-radius:26px!important;box-shadow:0 14px 38px rgba(0,0,0,.14),inset 0 1px rgba(255,255,255,.1)!important;gap:12px!important}
+body.cx-workbench .visual-calculator-panel .name-type-picker{display:grid!important;grid-template-columns:1fr 1fr!important;width:100%!important;padding:5px!important;border:1px solid var(--cx-border)!important;border-radius:15px!important;background:var(--cx-surface)!important;gap:5px!important}
+body.cx-workbench .visual-calculator-panel .name-type-button{border:0!important;border-radius:11px!important;padding:11px 14px!important;min-height:45px!important;background:transparent!important;color:var(--cx-text)!important;font-weight:750!important;transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
+body.cx-workbench .visual-calculator-panel .name-type-button:hover{background:var(--cx-surface-strong)!important;transform:scale(1.015)}
+body.cx-workbench .visual-calculator-panel .name-type-button.is-active{background:var(--cx-accent)!important;color:var(--cx-accent-text,#fff)!important;box-shadow:0 4px 15px rgba(0,0,0,.16)!important}
+body.cx-workbench .visual-calculator-display{min-height:90px!important;background:var(--cx-surface)!important;color:var(--cx-text)!important;text-align:right!important;font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important;font-size:clamp(25px,4vw,36px)!important;font-weight:650!important;letter-spacing:.015em!important;padding:20px!important;border:1px solid var(--cx-border)!important;border-radius:15px!important;outline:none!important}
+body.cx-workbench .visual-calculator-status{font-size:12px!important;text-align:right!important;min-height:16px!important;color:var(--cx-muted)!important}
+body.cx-workbench .visual-calculator-keys{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:9px!important}
+body.cx-workbench .visual-calculator-key{height:57px!important;min-height:57px!important;padding:0!important;border-radius:13px!important;border:1px solid var(--cx-border)!important;background:var(--cx-surface-strong)!important;color:var(--cx-text)!important;font-size:19px!important;font-weight:720!important;transition:background .16s ease,transform .14s ease!important}
+body.cx-workbench .visual-calculator-key:hover{background:var(--cx-surface)!important;transform:translateY(-2px)}
+body.cx-workbench .visual-calculator-key:active{transform:scale(.95)}
+body.cx-workbench .visual-calculator-key[data-operator]{color:var(--cx-accent)!important;background:color-mix(in srgb,var(--cx-accent) 9%,var(--cx-surface-strong))!important}
+body.cx-workbench .visual-calculator-key.primary-button{background:var(--cx-accent)!important;color:var(--cx-accent-text)!important;box-shadow:0 5px 15px rgba(0,0,0,.17)!important}
+@media(max-width:550px){body.cx-workbench .visual-calculator-panel{padding:13px!important}body.cx-workbench .visual-calculator-key{height:49px!important;min-height:49px!important}}
+
+/* v0.3.9: o modo econômico também vale para as ferramentas internas. */
+body.cx-workbench[data-quality="eco"] *,body.cx-workbench[data-quality="eco"] *::before,body.cx-workbench[data-quality="eco"] *::after{
+ animation:none!important;transition:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;box-shadow:none!important;text-shadow:none!important;scroll-behavior:auto!important;
+}
+body.cx-workbench[data-quality="eco"] :is(button,.local-tool-button,.panel-button):hover{scale:1!important}
+
+/* 0.3.11: a Roleta não é uma caixa dentro de outra caixa.
+   O formulário e a roda ocupam a página dedicada e deixam a única janela
+   sobreposta para o anúncio do vencedor. */
+body.cx-workbench[data-theme-v3] .generator-data-screen:has(.caixota-wheel-stage){
+  width:100%!important;max-width:none!important;background:transparent!important;
+  box-shadow:none!important;border:none!important;border-radius:0!important;
+  padding:0!important;gap:22px!important;
+}
+body.cx-workbench[data-theme-v3] .generator-data-screen:has(.caixota-wheel-stage)>.name-generator-panel{
+  padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important;
+  max-width:none!important;width:100%!important;gap:22px!important;
+}
+body.cx-workbench[data-theme-v3] .generator-data-screen:has(.caixota-wheel-stage) .caixota-wheel-stage{width:min(100%,540px)!important;margin:16px auto!important}
+body.cx-workbench[data-theme-v3] .generator-data-screen:has(.caixota-wheel-stage) .name-generator-fields{
+  border:1px solid var(--cx-border);border-radius:17px;padding:18px;
+  background:var(--cx-surface);box-sizing:border-box;
+}
+/* 0.3.13: evita uma segunda barra de rolagem dentro do iframe da Roleta. */
+html:has(body.cx-wheel-direct),body.cx-workbench.cx-wheel-direct{height:auto!important;min-height:0!important;overflow-y:hidden!important;scrollbar-width:none!important}
+body.cx-workbench.cx-wheel-direct .app-main{padding-top:12px!important;padding-bottom:16px!important}
+body.cx-workbench.cx-wheel-direct .generator-data-screen:has(.caixota-wheel-stage) .name-generator-fields{margin:0!important}
+
+/* 0.3.15: retire nested generic tool panels; retain intentional widgets
+   (calculator keypad, editors, controls) with their own boundaries. */
+body.cx-workbench .app-main{padding:0 0 24px!important;overflow:visible!important;}
+body.cx-workbench[data-theme-v3] :is(.local-tool-screen,.pdf-tool-screen,.video-tool-screen,.converter-tool-screen,.productivity-tool-screen,.generator-data-screen){
+ padding:0!important;border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important;max-width:none!important;min-width:0!important;width:100%!important;
+}
+body.cx-workbench[data-theme-v3] :is(.pdf-screen-body,.converter-screen-body,.video-tool-body,.local-tool-body){border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important;padding:0!important;overflow:visible!important}
+body.cx-workbench[data-theme-v3] :is(.local-direct-tools-container,.pdf-tools-container,.video-tools-container,.converter-tools-container){overflow:visible!important}
+html:has(body.cx-workbench),body.cx-workbench{overflow-y:hidden!important;min-height:0!important;height:auto!important;}
+@media(max-width:640px){body.cx-workbench .app-main{padding:0 0 15px!important}}
+
+/* 0.3.16: make the adapter's background entirely transparent. Legacy widgets
+   keep their own themed surfaces; the workbench must not draw a black square. */
+html:has(body.cx-workbench), body.cx-workbench[data-theme-v3], body.cx-workbench {
+ background:transparent!important;
+}
+body.cx-workbench .app-main{background:transparent!important;}
+body.cx-workbench [data-view="tools"]{background:transparent!important;}
+
+/* 0.3.17: embedded workbench root stays visually invisible. Individual tools
+   keep their own cards; the adapter page must not paint a slab behind them. */
+html:has(body.cx-workbench), body.cx-workbench, body.cx-workbench .app-main, body.cx-workbench [data-view="tools"], body.cx-workbench .app-view, body.cx-workbench .tools-group{background:transparent!important;box-shadow:none!important;}
+
+/* 0.3.18: the embedded document canvas follows the shell's current palette.
+   A transparent root in Chromium may paint white behind a nested document. */
+html:has(body.cx-workbench),body.cx-workbench{background:var(--cx-workbench-canvas,var(--cx-bg,#000))!important;}
+body.cx-workbench .app-main,body.cx-workbench .app-view,body.cx-workbench .tools-group,body.cx-workbench [data-view="tools"]{background:transparent!important;}
+
+/* Explicit specificity: overrides the old body[data-theme-v3] transparency rule. */
+body.cx-workbench[data-theme-v3]{background:var(--cx-workbench-canvas,var(--cx-bg,#000))!important;}
+body.cx-workbench[data-theme-v3] .app-view:where(.is-active),body.cx-workbench[data-theme-v3] .tools-group{background:transparent!important;}

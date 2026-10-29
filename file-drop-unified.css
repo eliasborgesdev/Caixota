@@ -1,0 +1,52 @@
+/* Caixota 0.3.13 · Uploads na linguagem visual do instalador de módulos. */
+body.cx-workbench :is(.pdf-drop-zone,.converter-drop-zone,.video-drop-zone,.cxprod-image-drop){
+ box-sizing:border-box!important;display:flex!important;flex-direction:column!important;
+ align-items:center!important;justify-content:center!important;gap:7px!important;
+ width:100%!important;min-height:286px!important;padding:29px 18px!important;
+ border:1.6px dashed color-mix(in srgb,var(--cx-accent) 37%,var(--cx-border))!important;
+ border-radius:20px!important;
+ background:linear-gradient(125deg,color-mix(in srgb,var(--cx-bg) 56%,var(--cx-surface)),var(--cx-surface-strong))!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+ text-align:center!important;transition:border-color .2s ease,background .2s ease,transform .2s ease!important;
+}
+body.cx-workbench :is(.pdf-drop-zone,.converter-drop-zone,.video-drop-zone,.cxprod-image-drop):hover,
+body.cx-workbench :is(.pdf-drop-zone,.converter-drop-zone,.video-drop-zone,.cxprod-image-drop).is-dragging{
+ border-color:var(--cx-accent)!important;
+ background:color-mix(in srgb,var(--cx-accent) 8%,var(--cx-surface))!important;
+ transform:none!important;
+}
+body.cx-workbench :is(.pdf-drop-icon,.converter-drop-icon,.video-drop-icon,.cxprod-image-drop-icon){
+ flex:none!important;width:66px!important;height:66px!important;margin:0 0 11px!important;
+ display:grid!important;place-items:center!important;border-radius:20px!important;
+ background:color-mix(in srgb,var(--cx-accent) 11%,var(--cx-surface-strong))!important;
+ color:var(--cx-accent)!important;font-size:25px!important;font-weight:500!important;
+}
+body.cx-workbench :is(.pdf-drop-zone,.converter-drop-zone,.video-drop-zone,.cxprod-image-drop)>strong{
+ font-size:16px!important;font-weight:790!important;line-height:1.4!important;margin:0!important;color:var(--cx-text)!important;
+}
+body.cx-workbench :is(.pdf-drop-zone,.converter-drop-zone,.video-drop-zone,.cxprod-image-drop)>small{
+ font-size:11px!important;line-height:1.5!important;margin:0!important;color:var(--cx-muted)!important;
+}
+body.cx-workbench :is(.pdf-drop-zone,.converter-drop-zone,.video-drop-zone,.cxprod-image-drop)>.cx-drop-click-label{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:13px;
+ min-height:37px;padding:8px 19px;border-radius:11px;
+ color:var(--cx-bg)!important;background:var(--cx-accent);
+ font-size:12px!important;font-weight:750!important;line-height:1;
+ border:1px solid color-mix(in srgb,var(--cx-accent) 80%,white);
+ pointer-events:none;
+}
+body.cx-workbench .video-drop-zone input[type=file]{z-index:2}
+body.cx-workbench .video-drop-zone .cx-drop-click-label{position:relative;z-index:1}
+@media(max-width:600px){body.cx-workbench :is(.pdf-drop-zone,.converter-drop-zone,.video-drop-zone,.cxprod-image-drop){min-height:235px!important;padding:25px 12px!important}}
+
+body.cx-workbench .cxprod-image-drop{cursor:pointer;position:relative;outline-offset:3px}
+body.cx-workbench .cxprod-image-drop .cx-drop-click-label{pointer-events:none}
+body.cx-workbench .cxprod-image-drop:focus-visible{outline:2px solid var(--cx-accent)}
+
+/* Cubo central, equivalente visual ao importador de módulos, sem imagens externas. */
+body.cx-workbench :is(.pdf-drop-icon,.converter-drop-icon,.video-drop-icon,.cxprod-image-drop-icon){font-size:0!important}
+body.cx-workbench :is(.pdf-drop-icon,.converter-drop-icon,.video-drop-icon,.cxprod-image-drop-icon)::after{
+ content:"";display:block;width:29px;height:29px;background:var(--cx-accent);
+ -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 20.5 6.7v10.6L12 22l-8.5-4.7V6.7L12 2Zm0 10 8.5-5.3M12 12 3.5 6.7M12 12v10' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 20.5 6.7v10.6L12 22l-8.5-4.7V6.7L12 2Zm0 10 8.5-5.3M12 12 3.5 6.7M12 12v10' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}

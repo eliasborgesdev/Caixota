@@ -1,0 +1,30 @@
+name: Sugerir uma melhoria
+description: Sugira uma ferramenta ou uma melhoria para a Caixota.
+title: "[Ideia]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: "Descreva uma necessidade concreta. Evite enviar arquivos privados ou dados pessoais."
+  - type: textarea
+    id: problem
+    attributes:
+      label: Que problema isso resolveria?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Como você imagina a solução?
+    validations:
+      required: true
+  - type: dropdown
+    id: offline
+    attributes:
+      label: Precisa funcionar offline?
+      options:
+        - Sim
+        - Não
+        - Não sei
+    validations:
+      required: true

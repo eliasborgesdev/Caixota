@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {LANGUAGES,languageCode,t} from '../assets/shell-locale.mjs';
+import {arcadeMarkup} from '../assets/arcade.mjs';
+import {termoMarkup,getTermoLanguages,score} from '../assets/termo.mjs';
+const read=x=>readFileSync(new URL('../'+x,import.meta.url),'utf8');
+const manifest=JSON.parse(read('manifest.json'));
+assert.equal(manifest.version,'0.3.18');
+assert(!read('background.js').includes('chrome.contextMenus.create();'),'Inválido: menu de contexto sem argumentos');
+for(const code of ['ja','zh','esd'])assert(LANGUAGES.some(x=>x.id===code),code);
+assert.equal(languageCode('esd'),'esd');assert.equal(languageCode('ja-JP'),'ja');assert.equal(languageCode('zh-CN'),'zh');
+assert.equal(t('Início','esd'),'Jez élska dzju');
+assert.equal(t('Jogos','ja'),'ゲーム');
+assert.equal(t('Ferramentas','zh'),'工具');
+assert.equal(t('Três jogos novos pra sua pausa! 🎮','en'),'Three new games for your break! 🎮');
+assert.equal(t('Resolve contas simples com números, parênteses e porcentagens.','en'),'Solve calculations with parentheses and percentages.');
+assert.deepEqual(score('PAPEL','PAPEL'),['correct','correct','correct','correct','correct']);
+assert(getTermoLanguages().includes('ja')&&getTermoLanguages().includes('zh'));
+assert(termoMarkup('ja').includes('ことばあて'));
+assert(termoMarkup('zh').includes('猜词游戏'));
+for(const game of ['pong','breakout']){const html=arcadeMarkup(game);assert(html.includes('data-arcade-control="mouse"'));assert(html.includes('data-arcade-control="keyboard"'));}
+assert(arcadeMarkup('pong').includes('data-pong-mode="timed"'));
+for(const n of ['0','1','2'])assert(arcadeMarkup('mines').includes(`data-mines-difficulty="${n}"`));
+assert(read('assets/v039.css').includes('data-quality="eco"'));
+assert(read('workbench-skin.css').includes('data-quality="eco"'));
+assert(read('shell.js').includes('contextDemoOpen:false'));
+assert(read('panel.html').includes('v039.css'));
+console.log('OK: menus contextuais, 10 idiomas, Termo editável, Arcade e modo econômico.');

@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {webcrypto} from 'node:crypto';
+import {score,termoMarkup,getTermoLanguages} from '../assets/termo.mjs';
+import {arcadeMarkup} from '../assets/arcade.mjs';
+import {LANGUAGES,languageCode,t} from '../assets/shell-locale.mjs';
+const read=x=>readFileSync(new URL('../'+x,import.meta.url),'utf8');
+const shell=read('shell.js'),manifest=JSON.parse(read('manifest.json'));
+assert.equal(manifest.version,'0.3.18');
+assert.match(shell,/case 'tool':return toolPage\(\)/);
+assert.match(shell,/function toolPage\(\)/);
+assert.match(shell,/data-tool-back/);
+assert.match(shell,/stopArcade\(\)/);
+assert.match(shell,/stopTermo\(\)/);
+assert.match(shell,/openTool\(id\)/);
+assert(!read('panel.html').includes('realWorkbenchHost'),'Janela popup legada ainda existe');
+assert(read('panel.html').includes('v038.css'));
+assert(read('assets/v038.css').includes('.cx-tool-iframe.ready'));
+assert(read('workbench-bridge.js').includes("type:'tool-opened'"));
+assert(read('workbench-bridge.js').includes('await translateTool()'));
+assert.equal(LANGUAGES.length,13);
+assert.deepEqual([...getTermoLanguages()].sort(),['pt','en','de','es','fr','it','nl','ja','zh'].sort());
+for(const l of getTermoLanguages()){const html=termoMarkup(l);assert(html.includes('data-termo-mode="4"'));assert(html.includes('data-termo-sound'));assert(html.includes('cxTermoKeyboard'));}
+assert.equal(t('Favoritos','en'),'Favorites');
+assert.equal(t('Configurações','de'),'Einstellungen');
+assert.equal(t('Sorteio','fr'),'Tirages');
+assert.equal(t('Jogos','it'),'Giochi');
+assert.equal(t('Início','nl'),'Start');
+assert.equal(t('Texto','es'),'Texto');
+assert.deepEqual(score('AAAAA','ABACA'),['correct','absent','correct','absent','correct']);
+for(const k of ['pong','breakout','mines']){const html=arcadeMarkup(k);assert(html.includes('data-arcade-start'));assert(html.includes('data-arcade-sound'));assert(html.includes(k==='mines'?'cxMinesGrid':'cxArcadeCanvas'));}
+for(const id of ['game-pong','game-breakout','game-mines'])assert(shell.includes(`id:'${id}'`));
+assert(shell.includes('LANGUAGES.map(l=>'),'Lista de idiomas não é gerada corretamente');
+assert(!shell.includes('🇧🇷')&&!shell.includes('🇬🇧'));
+assert(shell.includes("!e.target.closest('#noticePopover,[data-action=\"notifications\"]')"));
+assert(shell.includes('translateShell(document.querySelector'));
+console.log('OK: páginas próprias, tela legada oculta, tradução, 13 idiomas, Termo 1/2/4, arcade e menus.');

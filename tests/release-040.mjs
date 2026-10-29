@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {FAQ,LEGAL} from '../assets/help-content.mjs';
+import {GUIDES} from '../assets/tool-guides.mjs';
+import {guideEnglish} from '../assets/guide-translations.mjs';
+import {validateModule} from '../assets/module-package.mjs';
+const root=new URL('../',import.meta.url),read=p=>fs.readFileSync(new URL(p,root),'utf8');
+assert.equal(JSON.parse(read('manifest.json')).version,'0.1.0');
+assert.equal(FAQ.length,13);assert.equal(FAQ.filter(([q])=>/módulo/i.test(q)).length,3);
+assert.equal(LEGAL.length,4);for(const row of [...FAQ,...LEGAL])assert.ok(row.length===6&&row.every(Boolean));
+for(const id of Object.keys(GUIDES))assert.ok(guideEnglish[id],id+' missing guide translation');
+assert.ok(!read('shell.js').includes('<iframe'));assert.ok(read('shell.js').includes('nativeToolHost'));
+assert.ok(read('module-runtime.html').includes('module-runtime.js'));
+assert.throws(()=>validateModule({schemaVersion:2,id:'bad--id',version:'1.0.0',name:'Invalid',minCoreVersion:'0.1.0',contents:[]},{}));
+console.log('PASS 0.1.0: versão, FAQ de 13 perguntas/3 módulos, avisos, traduções dos guias, ferramentas internas sem iframe e isolamento de módulos preservado.');

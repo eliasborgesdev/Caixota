@@ -1,0 +1,127 @@
+{
+  "manifest_version": 3,
+  "name": "Caixota",
+  "short_name": "Caixota",
+  "version": "0.1.0",
+  "description": "Já pensou se todas as ferramentas mais úteis da internet se reunissem em um único lugar? Conheça a Caixota! :D",
+  "permissions": [
+    "storage",
+    "alarms",
+    "clipboardWrite",
+    "contextMenus",
+    "activeTab",
+    "downloads",
+    "clipboardRead",
+    "tabCapture",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "https://api.frankfurter.dev/*",
+    "https://api.mymemory.translated.net/*",
+    "https://freedictionaryapi.com/*",
+    "https://api.dicionario-aberto.net/*",
+    "https://translate.googleapis.com/*",
+    "<all_urls>",
+    "https://api.ocr.space/*",
+    "https://api.qrserver.com/*",
+    "https://speed.cloudflare.com/*",
+    "https://x.com/*",
+    "https://twitter.com/*",
+    "https://cdn.syndication.twimg.com/*",
+    "https://api.fxtwitter.com/*",
+    "https://www.instagram.com/*",
+    "https://*.pinterest.com/*",
+    "https://pin.it/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Caixota",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Period",
+        "mac": "Command+Period"
+      },
+      "description": "Abrir o Painel da Caixota"
+    },
+    "open-page-popup": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Period",
+        "mac": "Command+Shift+Period"
+      },
+      "description": "Abrir as ferramentas da página da Caixota"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "vendor/qrcode-generator.js",
+        "content.js",
+        "content-v3.js",
+        "shortcut-content.js",
+        "site-shortcuts-content.js"
+      ],
+      "css": [
+        "content.css",
+        "content-v3.css",
+        "caixota-volume.css"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "page-features.js"
+      ],
+      "css": [
+        "page-features.css"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://www.instagram.com/*"
+      ],
+      "js": [
+        "instagram-progress.js"
+      ],
+      "css": [
+        "instagram-progress.css"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "minimum_chrome_version": "116",
+  "sandbox": {
+    "pages": [
+      "module-runtime.html"
+    ]
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none';",
+    "sandbox": "sandbox allow-scripts; default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline'; img-src data: blob:; font-src data: blob:; media-src data: blob:; connect-src 'none'; child-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none';"
+  }
+}

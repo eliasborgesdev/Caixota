@@ -1,0 +1,18 @@
+/* Controle de volume integrado ao popup contextual de página. */
+#trem-selection-root .trem-volume-panel{width:min(410px,calc(100vw - 30px));max-width:100%}
+#trem-selection-root .trem-volume-settings{display:grid;gap:14px;padding:17px 16px 16px;color:var(--trem-text,#edf1f4)}
+#trem-selection-root .trem-volume-header{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+#trem-selection-root .trem-volume-value{font-weight:850;font-size:37px;line-height:1.15;font-variant-numeric:tabular-nums}
+#trem-selection-root .trem-volume-multiplier{font-weight:700;opacity:.7;font-size:16px}
+#trem-selection-root .trem-volume-range{width:100%;cursor:pointer;accent-color:var(--trem-accent,#a9d2de);height:24px;min-height:24px}
+#trem-selection-root .trem-volume-marks{display:flex;justify-content:space-between;gap:7px;font-size:10px;opacity:.72}
+#trem-selection-root .trem-volume-help{font-size:12px;line-height:1.6;opacity:.8;margin:0}
+#trem-selection-root .trem-volume-actions{display:flex;gap:9px}
+#trem-selection-root .trem-volume-start,#trem-selection-root .trem-volume-stop,#trem-selection-root .trem-volume-back{cursor:pointer;border-radius:10px;font:inherit;font-weight:700;font-size:12px;min-height:37px;padding:8px 12px;border:1px solid currentColor}
+#trem-selection-root .trem-volume-start{flex:1;background:#9ecad9;color:#152531;border-color:#9ecad9}
+#trem-selection-root .trem-volume-stop,#trem-selection-root .trem-volume-back{background:transparent;color:inherit;border-color:rgba(145,169,180,.4)}
+#trem-selection-root .trem-volume-back{justify-self:start}
+#trem-selection-root .trem-volume-actions button:disabled{cursor:default;opacity:.5}
+#trem-selection-root .trem-volume-message{min-height:1.8em;font-size:12px;line-height:1.5;margin:0}
+#trem-selection-root .trem-volume-message.error{color:#f7aa85}
+#trem-selection-root .trem-volume-warning{font-size:11px;opacity:.7;line-height:1.5}

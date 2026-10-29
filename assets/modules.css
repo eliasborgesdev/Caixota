@@ -1,0 +1,36 @@
+.cx-module-drop{padding:30px;text-align:center;border:1px dashed var(--stroke);border-radius:18px;background:var(--surface-strong);margin-bottom:24px;display:block}
+.cx-module-drop.dragging{outline:2px solid var(--primary);background:var(--primary-soft)}
+.cx-module-drop input{display:block;margin:22px auto;max-width:100%}
+.cx-module-dialog{position:relative;background:var(--surface-solid);color:var(--text);border:1px solid var(--stroke);border-radius:20px;padding:30px;width:min(700px,100%);max-height:88vh;overflow:auto;box-shadow:var(--shadow)}
+.cx-module-dialog h2{padding-right:32px}.cx-module-dialog .module-dialog-close{position:absolute;right:18px;top:18px}
+.cx-module-content{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.cx-module-content input{accent-color:var(--primary);width:19px;height:19px;flex:none}
+.cx-module-content small{display:block;color:var(--muted);margin-top:5px;line-height:1.5}
+.cx-module-selection{max-height:36vh;overflow:auto}.cx-module-actions{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.cx-module-error{color:var(--title);border-left:3px solid #e07568;padding:12px;background:var(--surface)}
+.cx-help-list{display:grid;gap:12px}.cx-help-list details{border:1px solid var(--stroke);border-radius:16px;padding:18px;background:var(--surface-strong)}
+.cx-help-list summary{font-weight:700;cursor:pointer;color:var(--title)}.cx-help-list p{line-height:1.8;color:var(--muted)}
+.cx-help-list .button-outline{margin-top:10px}
+.cx-module-frame{display:block;width:100%;height:550px;border:0;background:transparent}
+html body .cx-tool-workspace,html body .cx-tool-page .cx-tool-workspace,html body .cx-tool-workspace.cx-wheel-inline{border:1px solid var(--stroke)!important;border-radius:18px!important;background:var(--surface-strong)!important;padding:26px!important;overflow:hidden!important;box-shadow:none!important}
+.cx-tool-workspace .cx-tool-iframe{background:transparent!important;border:0!important}
+@media(max-width:640px){.cx-tool-workspace,.cx-module-dialog{padding:16px!important}}
+[data-quality="eco"] .cx-module-frame,[data-effects="off"] .cx-module-frame{animation:none}
+/* Match the child color scheme to avoid Chromium's opaque iframe canvas. */
+html body .cx-tool-page #v3WorkbenchFrame,html body #moduleRuntimeFrame{
+ background:transparent!important;color-scheme:normal!important;
+}
+html[data-preset^="mod-"] body{background:var(--bg)!important;color:var(--text)!important}
+html[data-preset^="mod-"] :is(.sidebar,.topbar,.app-footer){background:var(--surface)!important;border-color:var(--stroke)!important}
+html[data-preset^="mod-"] .button-primary{background:var(--primary)!important;color:var(--bg)!important}
+html[data-preset^="mod-"] :is(input,select,textarea){background:var(--surface)!important;color:var(--text)!important}
+@media(max-width:640px){
+ html body .topbar{flex-wrap:wrap;height:auto;min-height:68px;gap:10px;padding-top:12px;padding-bottom:12px}
+ html body .topbar-right{flex-wrap:wrap;max-width:100%;margin-left:auto}
+ html body .cx-tool-workspace{padding:16px!important}
+}
+.cx-help-section{margin-top:40px;padding-top:30px;border-top:1px solid var(--stroke)}
+.cx-help-section>h2{margin:0 0 20px}.cx-help-section .form-field{margin-bottom:20px;display:grid;gap:9px}
+.cx-help-legal{display:grid;gap:18px}.cx-help-legal>h2{margin-bottom:0}.cx-help-legal article{border-left:3px solid var(--primary);padding:6px 20px;background:var(--surface);border-radius:0 12px 12px 0}.cx-help-legal h3{margin:8px 0}.cx-help-legal p{color:var(--muted);line-height:1.8}
+/* Use the same restrained surface as the dice page. */
+html body .cx-tool-page .cx-tool-workspace{background:var(--surface)!important}

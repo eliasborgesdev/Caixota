@@ -1,0 +1,32 @@
+/* One shared card in shell; the embedded processing document never paints a canvas. */
+html:has(body.cx-workbench),html body.cx-workbench[data-theme-v3]{
+ background:transparent!important;color-scheme:normal!important;
+}
+html body.cx-workbench .app-main,
+html body.cx-workbench .app-view,
+html body.cx-workbench .tools-group,
+html body.cx-workbench .tools-group.is-active{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+}
+html body.cx-workbench .app-main{padding:0!important}
+html body.cx-workbench[data-theme-v3]{
+ --cx-text:var(--host-text);--cx-muted:var(--host-muted);--cx-title:var(--host-title);
+ --cx-subtitle:var(--host-muted);--cx-bg:var(--host-surface);--cx-surface:var(--host-surface);
+ --cx-surface-strong:var(--host-surface-strong);--cx-surface-soft:var(--host-surface);
+ --cx-border:var(--host-stroke);--cx-border-strong:var(--host-stroke);
+ --cx-accent:var(--host-primary);--cx-accent-strong:var(--host-primary);
+ --cx-accent-ink:var(--host-primary);--cx-accent-text:var(--host-bg);
+}
+html body.cx-workbench :is(.local-direct-top,.pdf-screen-top,.converter-screen-top,.video-screen-top){
+ padding:0 0 20px!important;border:0!important;
+}
+html body.cx-workbench :is(.local-direct-heading,.pdf-screen-heading,.converter-screen-heading,.video-screen-heading) :is(h2,h3){font-size:21px!important;line-height:1.35!important}
+html body.cx-workbench :is(.local-tool-screen,.pdf-tool-screen,.video-tool-screen,.converter-tool-screen,.productivity-tool-screen,.generator-data-screen){
+ border:0!important;padding:0!important;background:transparent!important;
+}
+html body.cx-workbench :is(.local-offline-notice,.pdf-privacy-note,.video-network-note){background:var(--host-surface)!important;border:1px solid var(--host-stroke)!important;color:var(--host-muted)!important;border-radius:14px!important}
+html body.cx-workbench :is(input,textarea,select){border-color:var(--host-stroke)!important}
+html body.cx-workbench[data-effects="off"] *,html body.cx-workbench[data-quality="eco"] *{
+ animation:none!important;transition:none!important;box-shadow:none!important;backdrop-filter:none!important;
+}
+@media(prefers-reduced-motion:reduce){html body.cx-workbench *{animation:none!important;transition:none!important}}

@@ -1,0 +1,15 @@
+/* Caixota 0.3.10: three new browser helpers and flat sidebar mode. */
+.cx-browser-feature{max-width:1000px;margin:16px auto 45px;display:grid;gap:24px}
+.cx-browser-feature-intro{display:flex;gap:20px;align-items:center;padding:14px 0 4px}
+.cx-browser-feature-intro h1{font-size:clamp(26px,3.5vw,39px);margin:6px 0 9px;line-height:1.1}
+.cx-browser-feature-intro p{color:var(--text-muted,var(--muted,#9daab3));line-height:1.6;max-width:680px}
+.cx-browser-feature-icon{display:grid;place-items:center;min-width:84px;height:84px;background:color-mix(in srgb,var(--accent,#81b7d1) 14%,transparent);color:var(--accent,#81b7d1);border-radius:24px;border:1px solid color-mix(in srgb,var(--accent,#81b7d1) 28%,transparent)}
+.cx-browser-feature-card{padding:clamp(22px,4vw,36px);background:var(--surface,rgba(35,45,52,.68));border:1px solid var(--stroke,rgba(255,255,255,.14));border-radius:24px;display:grid;gap:22px;max-width:100%}
+.cx-browser-feature-card>p{margin:0;color:var(--text-soft,#c6d2da);line-height:1.65}
+.cx-browser-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:17px 20px;border-radius:17px;border:1px solid var(--stroke,#ffffff28);background:var(--panel,rgba(0,0,0,.07));}
+.cx-browser-toggle-row>div{display:grid;gap:5px}.cx-browser-toggle-row small{color:var(--text-soft,#c6d2da);font-size:13px}
+.cx-browser-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.cx-browser-steps span{background:var(--panel,rgba(0,0,0,.07));border:1px solid var(--stroke,#ffffff28);border-radius:14px;padding:14px;font-size:14px;line-height:1.5}
+.cx-browser-tip{background:color-mix(in srgb,var(--accent,#81b7d1) 8%,transparent);border-radius:13px;border:1px solid color-mix(in srgb,var(--accent,#81b7d1) 20%,transparent);padding:14px!important;font-size:13px;color:var(--text-soft,#b7c5cf)}
+.cx-flat-categories .category-link{margin-left:0!important;padding-left:12px!important;transform:none!important}
+.cx-flat-categories .category-link:hover{transform:none!important}
+@media(max-width:650px){.cx-browser-steps{grid-template-columns:1fr}.cx-browser-feature-intro{align-items:flex-start}.cx-browser-feature-icon{min-width:60px;height:60px}}

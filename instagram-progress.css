@@ -1,0 +1,99 @@
+/* Instagram progress bar, isolated from the native player layers.
+   Kept visually lightweight and interactive like a normal media timeline. */
+#cx-ig-timeline-root {
+  all: initial !important;
+  position: fixed !important;
+  left: var(--cx-ig-left, 0px) !important;
+  top: calc(var(--cx-ig-bottom, 0px) - 36px) !important;
+  width: var(--cx-ig-width, 0px) !important;
+  height: 36px !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  z-index: 2147483646 !important;
+  pointer-events: none !important;
+  color-scheme: dark !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+  direction: ltr !important;
+}
+#cx-ig-timeline-root[hidden] { display: none !important; }
+#cx-ig-timeline-root * { box-sizing: border-box !important; }
+#cx-ig-timeline-root .cx-ig-timeline {
+  all: initial !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  height: 28px !important;
+  display: block !important;
+  outline: none !important;
+  pointer-events: auto !important;
+  touch-action: none !important;
+  cursor: pointer !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  border-radius: 0 !important;
+  background: linear-gradient(to top, rgba(0,0,0,.48), transparent) !important;
+}
+#cx-ig-timeline-root .cx-ig-track {
+  display:block !important;
+  position:absolute !important;
+  left:0 !important;right:0 !important;
+  bottom: 4px !important;
+  height: 4px !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.50) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.35) !important;
+  transition: height 160ms ease, bottom 160ms ease !important;
+}
+#cx-ig-timeline-root .cx-ig-fill {
+  display:block !important;position:absolute !important;
+  left:0 !important;top:0 !important;
+  height:100% !important;width:0;
+  border-radius:inherit !important;
+  background:#ff244a !important;
+  box-shadow:0 0 7px rgba(255,36,74,.25) !important;
+}
+#cx-ig-timeline-root .cx-ig-thumb {
+  display:block !important;
+  position:absolute !important;
+  left:0;top:50% !important;
+  height:13px !important;width:13px !important;
+  background:white !important;border:2px solid #ff244a !important;
+  border-radius:50% !important;
+  box-shadow:0 2px 7px rgba(0,0,0,.5) !important;
+  transform:translate(-50%,-50%) !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  transition:opacity 110ms ease !important;
+}
+#cx-ig-timeline-root .cx-ig-time {
+  all: initial !important;
+  position:absolute !important;
+  left:50%;bottom:34px !important;
+  transform:translateX(-50%) !important;
+  display:block !important;
+  padding:6px 9px !important;
+  color:#fff !important;
+  background:rgba(10,13,19,.95) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:8px !important;
+  font:600 12px/1.1 system-ui,sans-serif !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  box-shadow:0 4px 14px rgba(0,0,0,.35) !important;
+  transition:opacity 110ms ease !important;
+}
+#cx-ig-timeline-root .cx-ig-timeline:is(:hover,:focus-visible,.cx-ig-dragging) .cx-ig-track {
+  height:8px !important;
+  bottom:4px !important;
+}
+#cx-ig-timeline-root .cx-ig-timeline:is(:hover,:focus-visible,.cx-ig-dragging) :is(.cx-ig-thumb,.cx-ig-time) {
+  opacity:1 !important;
+}
+#cx-ig-timeline-root .cx-ig-unseekable .cx-ig-thumb {display:none!important;}
+#cx-ig-timeline-root .cx-ig-timeline:focus-visible {outline:2px solid #fff!important;outline-offset:2px!important;}
+@media (prefers-reduced-motion: reduce) {
+  #cx-ig-timeline-root .cx-ig-timeline *,#cx-ig-timeline-root .cx-ig-timeline {transition:none!important;}
+}

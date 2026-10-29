@@ -1,0 +1,9 @@
+/* Mode escuro de sites, apenas quando ativado pelo menu de contexto. */
+html.cx0310-force-dark {
+  filter: invert(1) hue-rotate(180deg) !important;
+  background-color: #fff !important;
+}
+html.cx0310-force-dark :is(img,video,canvas,picture,svg,iframe) {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+/* A extensão não injeta botões PiP sobre vídeos. */

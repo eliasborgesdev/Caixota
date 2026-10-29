@@ -1,0 +1,41 @@
+name: Relatar um problema
+description: Relate um erro reproduzível na Caixota.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Não inclua senhas, dados pessoais, arquivos privados ou informações de segurança exploráveis. Para segurança, siga SECURITY.md."
+  - type: input
+    id: version
+    attributes:
+      label: Versão da Caixota
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador e versão
+      placeholder: "Chrome, Brave ou outro Chromium"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Como reproduzir
+      description: Liste os passos para ver o problema.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: O que você esperava que acontecesse?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: O que aconteceu?
+    validations:
+      required: true
