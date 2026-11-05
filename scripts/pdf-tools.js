@@ -1,4 +1,4 @@
-import * as pdfjsLib from "./vendor/pdf.min.mjs";
+import * as pdfjsLib from "../vendor/pdf.min.mjs";
 import { PDF_TOOL_CATALOG } from "./panel-catalog.mjs";
 import {
   MAX_PDF_FILE_BYTES,
@@ -17,8 +17,8 @@ import {
   splitPdf,
   watermarkPdf
 } from "./pdf-core.mjs";
-import { PDFDocument } from "./vendor/pdf-lib.esm.min.mjs";
-import { convertOfficeToPdf } from "./assets/office-pdf.mjs";
+import { PDFDocument } from "../vendor/pdf-lib.esm.min.mjs";
+import { convertOfficeToPdf } from "../assets/office-pdf.mjs";
 
 export function initialize(document, window, bridge){
 

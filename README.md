@@ -4,7 +4,7 @@
 
 Caixota 0.1.0 é uma extensão para navegadores baseados em Chromium. Reúne ferramentas de texto, arquivos, imagens, PDF, produtividade, jogos e navegação em um painel personalizável. Muitos recursos funcionam localmente; outros dependem de serviços externos, descritos em [Privacidade](PRIVACY.md).
 
-> **Licença:** o código pode ser consultado publicamente, mas a licença autoral da Caixota restringe redistribuição e versões modificadas. Ela não é uma licença open source aprovada pela OSI. Leia [LICENSE.md](LICENSE.md) e [a nota sobre repositórios públicos no GitHub](docs/PUBLICAR-NO-GITHUB.md) antes de copiar ou redistribuir arquivos.
+A licença própria permite modificar e redistribuir a Caixota para fins não comerciais, sob as condições de créditos, doações e indicação do projeto original descritas em [LICENSE.md](LICENSE.md).
 
 ## O que vem nesta versão
 
@@ -65,3 +65,5 @@ Os resultados e limites da verificação estão em [docs/VALIDACAO-0.1.0.md](doc
 ## Créditos e doações
 
 Caixota é criada por **Elias Adelson Borges Mitouso**. O uso da extensão é gratuito; doações são voluntárias e não liberam recursos adicionais. A licença exige preservar os créditos e a área de doações.
+
+Os scripts principais estão em `scripts/`. Para atualizar um repositório existente, registre também a remoção dos arquivos antigos da raiz, para não manter cópias duplicadas.

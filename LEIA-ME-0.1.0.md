@@ -19,7 +19,7 @@ Não inclui Caixota Code, compilador Python ou publicação automática no GitHu
 Os processadores internos agora são inicializados no painel, dentro de um componente com estilos próprios. O sandbox fica reservado ao código dos módulos importados.
 
 Veja docs/MODULOS.md para contrato e limitações. A Ajuda no painel descreve privacidade e serviços externos.
-Consulte LICENSE.md para o código autoral e THIRD-PARTY-NOTICES.md para componentes de terceiros. A consulta ao código não autoriza redistribuir a Caixota.
+A licença própria permite modificar e redistribuir a Caixota para fins não comerciais, sob as condições de créditos, doações e indicação do projeto original descritas em `LICENSE.md`.
 
 A versão final inclui PSX/VHS, Jogo da Velha, Forca e Player de Música. O miniplayer mantém áudio com o painel principal fechado enquanto a janela própria continuar aberta.
 

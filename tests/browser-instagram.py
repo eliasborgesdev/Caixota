@@ -14,7 +14,7 @@ with sync_playwright() as p:
   page.set_content(html)
   page.evaluate('''() => { window.chrome = {storage:{local:{get:async()=>({caixotaBrowserFeatures0310:{instagramProgress:true}})},onChanged:{addListener(fn){window.__changePrefs=fn}}}};const v=document.querySelector('video');v.__t=3;Object.defineProperty(v,'duration',{configurable:true,get(){return 20}});Object.defineProperty(v,'currentTime',{configurable:true,get(){return this.__t},set(t){this.__t=t}});Object.defineProperty(v,'paused',{configurable:true,get(){return false}}); }''')
   page.add_style_tag(content=(base/'instagram-progress.css').read_text())
-  script=(base/'instagram-progress.js').read_text().replace("if (location.hostname !== 'www.instagram.com' && location.hostname !== 'instagram.com') return;", 'if (false) return;')
+  script=(base/'scripts/instagram-progress.js').read_text().replace("if (location.hostname !== 'www.instagram.com' && location.hostname !== 'instagram.com') return;", 'if (false) return;')
   page.add_script_tag(content=script)
   page.wait_for_selector('#cx-ig-timeline-root:not([hidden])')
   bar=page.locator('#cx-ig-timeline-root .cx-ig-timeline')

@@ -17,7 +17,7 @@
 O código passou nos testes listados, mas há uma decisão de permissão que o mantenedor precisa considerar antes de anunciar a extensão para uso geral:
 
 1. **Acesso amplo a sites:** `manifest.json` declara `<all_urls>` em permissões de host e injeta scripts de conteúdo em todas as páginas comuns. Isso dá à extensão uma superfície de acesso ampla, mesmo com recursos contextuais desligados. O escopo foi preservado nesta correção para não remover funcionalidades de navegação existentes. Antes de lançar, o mantenedor deve decidir se aceita esse escopo e explicar seus motivos na página do projeto. Reduzi-lo exigiria uma mudança funcional e testes próprios.
-2. **Compatibilidade entre licença e GitHub público:** a licença autoral proíbe redistribuição e versões modificadas, mas os termos do GitHub dão aos usuários o direito de visualizar e bifurcar (fork) repositórios públicos na plataforma. A licença não é OSI open source. A página de publicação precisa explicar esse limite sem prometer que o botão de fork possa ser removido.
+2. **Licença:** esta observação histórica foi substituída pelos termos atuais em `LICENSE.md`.
 3. **Validação no navegador do mantenedor:** este ambiente não conseguiu carregar a extensão completa com uma instalação real de Chromium. Faça a validação final local descrita em `docs/PUBLICAR-NO-GITHUB.md`, incluindo permissões exibidas, atualização sobre uma instalação anterior e funcionalidades que interagem com páginas.
 4. **Dependências:** não há `package.json` nem lockfile para executar `npm audit`. Bibliotecas vendorizadas estão listadas em `THIRD-PARTY-NOTICES.md`; esta revisão não analisou todas as versões upstream nem executou um scanner especializado de dependências.
 

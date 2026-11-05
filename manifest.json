@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Caixota",
   "short_name": "Caixota",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Já pensou se todas as ferramentas mais úteis da internet se reunissem em um único lugar? Conheça a Caixota! :D",
   "permissions": [
     "storage",
@@ -31,10 +31,14 @@
     "https://api.fxtwitter.com/*",
     "https://www.instagram.com/*",
     "https://*.pinterest.com/*",
-    "https://pin.it/*"
+    "https://pin.it/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://*.wikipedia.org/*",
+    "https://api.search.brave.com/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "scripts/background-main.js",
+    "type": "module"
   },
   "action": {
     "default_title": "Caixota",
@@ -68,10 +72,10 @@
       ],
       "js": [
         "vendor/qrcode-generator.js",
-        "content.js",
-        "content-v3.js",
-        "shortcut-content.js",
-        "site-shortcuts-content.js"
+        "scripts/content.js",
+        "scripts/content-v3.js",
+        "scripts/shortcut-content.js",
+        "scripts/site-shortcuts-content.js"
       ],
       "css": [
         "content.css",
@@ -86,7 +90,7 @@
         "<all_urls>"
       ],
       "js": [
-        "page-features.js"
+        "scripts/page-features.js"
       ],
       "css": [
         "page-features.css"
@@ -99,13 +103,28 @@
         "https://www.instagram.com/*"
       ],
       "js": [
-        "instagram-progress.js"
+        "scripts/instagram-progress.js"
       ],
       "css": [
         "instagram-progress.css"
       ],
       "run_at": "document_idle",
       "all_frames": false
+    },
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "run_at": "document_idle",
+      "js": [
+        "ia/core/content-core.js",
+        "ia/tools/verificar/content.js",
+        "ia/tools/resumir/content.js",
+        "ia/tools/reescrever/content.js",
+        "ia/tools/dicionario/content.js",
+        "ia/tools/explicar/content.js"
+      ]
     }
   ],
   "icons": {
@@ -122,6 +141,11 @@
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'none';",
-    "sandbox": "sandbox allow-scripts; default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline'; img-src data: blob:; font-src data: blob:; media-src data: blob:; connect-src 'none'; child-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none';"
-  }
+    "sandbox": "sandbox allow-scripts; default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'unsafe-inline'; img-src data: blob:; font-src data: blob:; media-src data: blob:; connect-src blob: data:; worker-src blob:; frame-src blob:; object-src 'none'; form-action 'none'; base-uri 'none';"
+  },
+  "optional_permissions": [
+    "scripting",
+    "cookies",
+    "contentSettings"
+  ]
 }

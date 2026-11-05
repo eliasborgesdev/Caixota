@@ -18,7 +18,7 @@ assert.equal(measureWorkbenchHeight(mockDocument([mockScreen(0,1030),mockScreen(
  'A última ferramenta visível define o limite inferior');
 assert.equal(measureWorkbenchHeight(mockDocument([mockScreen(0,1030,1030,false),mockScreen(0,500)])),540,
  'Ferramentas ocultas não podem criar espaços vazios');
-const shell=read('shell.js'),bridge=read('workbench-bridge.js'),css=read('assets/v038.css'),skin=read('workbench-skin.css');
+const shell=read('scripts/shell.js'),bridge=read('scripts/workbench-bridge.js'),css=read('assets/v038.css'),skin=read('workbench-skin.css');
 assert.match(shell,/measureWorkbenchHeight\(doc\)/);
 assert.match(shell,/startToolFrameHeightWatch\(\)/);
 assert.match(shell,/stopToolFrameHeightWatch\(\)/);

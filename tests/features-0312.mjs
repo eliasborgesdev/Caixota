@@ -10,11 +10,11 @@ assert.equal(manifest.commands['open-page-popup'].suggested_key.default,'Ctrl+Sh
 assert(!fs.existsSync(new URL('../audio-service.js',import.meta.url)));
 assert(!fs.existsSync(new URL('../audio-offscreen.js',import.meta.url)));
 assert(!fs.existsSync(new URL('../assets/audio-booster.mjs',import.meta.url)));
-assert(!read('shell.js').includes('audioBoosterMarkup'));
-assert(read('content.js').includes('function renderPageVolumeMenu()'));
-assert(read('background.js').includes('caixota-open-volume'));
+assert(!read('scripts/shell.js').includes('audioBoosterMarkup'));
+assert(read('scripts/content.js').includes('function renderPageVolumeMenu()'));
+assert(read('scripts/background.js').includes('caixota-open-volume'));
 assert(read('workbench.html').includes('file-drop-unified.css'));
-assert(read('workbench-bridge.js').includes("type:'content-height'"));
+assert(read('scripts/workbench-bridge.js').includes("type:'content-height'"));
 // Validar o processador sem API de áudio real.
 const handlers=[];let recorded=0,stopped=0,gain=0,closed=0;
 const track={addEventListener(){},stop(){stopped++;}};
@@ -27,7 +27,7 @@ class FakeContext {
  close(){closed++;return Promise.resolve();}
 }
 const chrome={runtime:{id:'test',onMessage:{addListener(f){handlers.push(f);}}}};
-vm.runInNewContext(read('caixota-volume-processor.js'),{
+vm.runInNewContext(read('scripts/caixota-volume-processor.js'),{
  chrome,AudioContext:FakeContext,navigator:{mediaDevices:{getUserMedia:async args=>{assert.equal(args.audio.mandatory.chromeMediaSource,'tab');recorded++;return stream;}}},console
 });
 const call=msg=>new Promise(resolve=>handlers[0]({channel:'cx-volume-processor',tabId:42,...msg},{id:'test'},resolve));
@@ -39,7 +39,7 @@ assert.equal(gain,3);
 assert.equal((await call({type:'stop'})).enabled,false);
 assert(stopped&&closed);
 // Análise do broker e política de aba originadora.
-const bridge=read('caixota-volume-engine.js');
+const bridge=read('scripts/caixota-volume-engine.js');
 assert(bridge.includes('sender.tab?.id'));
 assert(bridge.includes("message?.channel !== CX_VOLUME_TARGET"));
 assert(bridge.includes('chrome.tabCapture.getMediaStreamId({targetTabId:tabId})'));

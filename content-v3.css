@@ -46,3 +46,4 @@
 #trem-selection-root[data-v3-font="opensans"]{--trem-font-family:"Open Sans",Arial,sans-serif}
 #trem-selection-root[data-v3-font="lato"]{--trem-font-family:Lato,Arial,sans-serif}
 #trem-selection-root[data-v3-font="pixel"]{--trem-font-family:"Lucida Console",Consolas,monospace}
+#trem-selection-root [data-tool-id^="ia-"] .trem-action-badge{border-radius:7px;padding:2px 6px;color:var(--trem-v3-accent,var(--trem-ui-accent));background:color-mix(in srgb,var(--trem-v3-accent,var(--trem-ui-accent)) 14%,transparent);border:1px solid currentColor;font-weight:800}

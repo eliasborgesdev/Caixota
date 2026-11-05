@@ -1,4 +1,4 @@
-import { GIFEncoder, quantize, applyPalette } from "./vendor/gifenc.esm.js";
+import { GIFEncoder, quantize, applyPalette } from "../vendor/gifenc.esm.js";
 import { VIDEO_TOOL_CATALOG } from "./panel-catalog.mjs";
 
 export function initialize(document, window, bridge){

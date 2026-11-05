@@ -7,8 +7,8 @@ import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
 import {webcrypto} from 'node:crypto';
 import {PDFDocument, StandardFonts} from '../vendor/pdf-lib.esm.min.mjs';
-import {parsePageSelection} from '../pdf-core.mjs';
-import {CATEGORY_CATALOGS, GENERATOR_TOOL_CATALOG, TEXT_TOOL_CATALOG} from '../panel-catalog.mjs';
+import {parsePageSelection} from '../scripts/pdf-core.mjs';
+import {CATEGORY_CATALOGS, GENERATOR_TOOL_CATALOG, TEXT_TOOL_CATALOG} from '../scripts/panel-catalog.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.json'),'utf8'));
@@ -37,9 +37,9 @@ for (const [category, ids] of Object.entries({
     assert(entry?.direct === true && entry?.network === 'offline', `Nova ferramenta sem abertura direta ou tag offline: ${category}/${id}`);
   }
 }
-for (const filename of ['productivity-tools.js','productivity-tools.css','regex-worker.js']) assert(fs.existsSync(path.join(root,filename)), `Arquivo de produtividade ausente: ${filename}`);
+for (const filename of ['scripts/productivity-tools.js','productivity-tools.css','scripts/regex-worker.js']) assert(fs.existsSync(path.join(root,filename)), `Arquivo de produtividade ausente: ${filename}`);
 const prodHtml = fs.readFileSync(path.join(root,'workbench.html'),'utf8');
-for (const asset of ['productivity-tools.js','productivity-tools.css','vendor/qrcode-generator.js']) assert(prodHtml.includes(asset),`Asset não carregado: ${asset}`);
+for (const asset of ['scripts/productivity-tools.js','productivity-tools.css','vendor/qrcode-generator.js']) assert(prodHtml.includes(asset),`Asset não carregado: ${asset}`);
 for (const cat of ['text','images','video','pdf','generators']) assert(prodHtml.includes(`data-tools-group="${cat}"`), `Grupo original ausente: ${cat}`);
 const wheelStyle = fs.readFileSync(path.join(root,'local-tools.css'),'utf8');
 assert(wheelStyle.includes('transform: translate(-50%, -50%) !important'), 'Correção do hover da roleta ausente');
@@ -52,9 +52,9 @@ for(const [filename, ids] of Object.entries({
   const html=fs.readFileSync(path.join(root,filename),'utf8');
   for(const id of ids) assert(html.includes(`id="${id}"`),`Elemento ausente ${filename}: ${id}`);
 }
-const local=fs.readFileSync(path.join(root,'local-tools.js'),'utf8');
+const local=fs.readFileSync(path.join(root,'scripts/local-tools.js'),'utf8');
 const context=vm.createContext({console,crypto:webcrypto,document:{getElementById:()=>null,addEventListener:()=>{}},setTimeout,clearTimeout,TextEncoder,window:{}});
-vm.runInContext(local,context,{filename:'local-tools.js'});
+vm.runInContext(local,context,{filename:'scripts/local-tools.js'});
 const run=source=>vm.runInContext(source,context);
 for(const max of [1,2,7,0xffffffff,0x100000000,0x100000001,0x10000000000,Number.MAX_SAFE_INTEGER]){
   const sampled=run(`Array.from({length:100},()=>secureInt(${max}))`);
@@ -84,7 +84,7 @@ const reopened=await PDFDocument.load(compressed,{ignoreEncryption:false});
 assert.equal(reopened.getPageCount(),1);
 assert.equal(reopened.getPage(0).getWidth(),400);
 // Identificação de contêiner pelo cabeçalho, sem inferir codecs.
-const videoSource=fs.readFileSync(path.join(root,'video-tools.js'),'utf8');
+const videoSource=fs.readFileSync(path.join(root,'scripts/video-tools.js'),'utf8');
 const begin=videoSource.indexOf('async function detectVideoContainer(file)');
 const end=videoSource.length;
 assert(begin>=0 && end>begin);
@@ -115,7 +115,7 @@ assert.equal(defaultWheel.confetti,true);
 assert.equal(run('wheelTextColor("#ffffff")'), '#172333');
 assert.equal(run('wheelTextColor("#000000")'), '#ffffff');
 
-const pdfTools=fs.readFileSync(path.join(root,'pdf-tools.js'),'utf8');
+const pdfTools=fs.readFileSync(path.join(root,'scripts/pdf-tools.js'),'utf8');
 assert(pdfTools.includes('ctx.clearRect(0,0,700,180)'), 'Canvas de assinatura não transparente');
 for(const f of ['local-tools.css','video-tools.css','pdf-tools.css','panel.css'])assert(fs.existsSync(path.join(root,f)));
 console.log('OK: Manifest V3, versão, catálogo, migração de senha, HTML, WebCrypto 32/53 bits, UUID v4/v7, dados fictícios, PDF e regressões visuais estáticas.');
@@ -123,20 +123,20 @@ console.log('Ferramentas por categoria:',Object.fromEntries(Object.entries(CATEG
 
 // Caixota 0.3.0: functional migration checks.
 const newPanel=fs.readFileSync(path.join(root,'panel.html'),'utf8');
-const shell=fs.readFileSync(path.join(root,'shell.js'),'utf8');
+const shell=fs.readFileSync(path.join(root,'scripts/shell.js'),'utf8');
 const manifestText=fs.readFileSync(path.join(root,'manifest.json'),'utf8');
-assert(newPanel.includes('shell.js')&&newPanel.includes('themes-v3.css'),'Shell novo ausente');
+assert(newPanel.includes('scripts/shell.js')&&newPanel.includes('themes-v3.css'),'Shell novo ausente');
 assert(shell.includes('id=\"v3WorkbenchFrame\"')&&fs.existsSync(path.join(root,'workbench.html')),'Motor legado indisponível');
 assert(shell.includes('isDirectTool(t)')&&shell.includes("['video','pdf'].includes(t?.category)"),'Roteamento dos conversores incompleto');
 assert(shell.includes('data-v3-theme')&&shell.includes('data-v3-context-id'),'Temas ou ferramentas contextuais ausentes');
 assert(manifest.commands._execute_action.suggested_key.default==='Ctrl+Period','Atalho padrão incorreto');
 for(const theme of ['glass-light','glass-dark','oled','warm','aero'])assert(fs.readFileSync(path.join(root,'themes-v3.css'),'utf8').includes(`data-preset="${theme}"`),`Tema ausente ${theme}`);
-assert(fs.readFileSync(path.join(root,'workbench-bridge.js'),'utf8').includes('caixota:open-direct-tool'),'Integração com processadores originais ausente');
-assert(fs.readFileSync(path.join(root,'content-v3.js'),'utf8').includes('caixotaUiV3'),'Popup contextual não segue o novo tema');
-assert(fs.readFileSync(path.join(root,'context-demo.js'),'utf8').includes('caixotaUiV3'),'Laboratório não segue o novo tema');
+assert(fs.readFileSync(path.join(root,'scripts/workbench-bridge.js'),'utf8').includes('caixota:open-direct-tool'),'Integração com processadores originais ausente');
+assert(fs.readFileSync(path.join(root,'scripts/content-v3.js'),'utf8').includes('caixotaUiV3'),'Popup contextual não segue o novo tema');
+assert(fs.readFileSync(path.join(root,'scripts/context-demo.js'),'utf8').includes('caixotaUiV3'),'Laboratório não segue o novo tema');
 assert(!manifestText.includes('default_popup'),'Clique no ícone deve abrir o painel diretamente');
-assert(fs.readFileSync(path.join(root,'shell.js'),'utf8').includes("state.theme==='dark'?'glass-light':'glass-dark'"),'Atalho de tema não alterna apenas claro e escuro');
-assert(fs.readFileSync(path.join(root,'shell.js'),'utf8').includes('data-profile-upload'),'Edição de foto do perfil ausente');
+assert(fs.readFileSync(path.join(root,'scripts/shell.js'),'utf8').includes("state.theme==='dark'?'glass-light':'glass-dark'"),'Atalho de tema não alterna apenas claro e escuro');
+assert(fs.readFileSync(path.join(root,'scripts/shell.js'),'utf8').includes('data-profile-upload'),'Edição de foto do perfil ausente');
 assert(fs.readFileSync(path.join(root,'assets/speed-test.mjs'),'utf8').includes('speed.cloudflare.com'),'Ferramenta de medição de velocidade ausente');
 assert(manifest.host_permissions.includes('https://speed.cloudflare.com/*'),'Permissão do servidor ausente');
 assert(shell.includes('cx-release-carousel')&&shell.includes('utility-speed-test'),'Carrossel ou Utilitários não integrados');
@@ -154,5 +154,5 @@ assert(!shell.includes('<div class="sidebar-note">'),'Cartão promocional não f
 assert(shell.includes('data-profile-upload="banner"'),'Banner editável ausente');
 assert(shell.includes('cx-edit-tag-color')&&shell.includes('cx-edit-link-url'),'Tags e links ausentes');
 assert(shell.includes('data-donation-copy')&&shell.includes('QR Code Pix para doações'),'Página de doação incompleta');
-assert(!fs.readFileSync(path.join(root,'background.js'),'utf8').includes('OPEN_MEDIA_DOWNLOADER'),'Baixador antigo continua ativo');
+assert(!fs.readFileSync(path.join(root,'scripts/background.js'),'utf8').includes('OPEN_MEDIA_DOWNLOADER'),'Baixador antigo continua ativo');
 console.log('OK v0.3.2: editor de perfil, centro de notificações, teste prolongado, doações e desempenho.');

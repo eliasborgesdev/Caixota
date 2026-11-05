@@ -43,7 +43,7 @@ Escolha cores com contraste legível; não há certificação automática de ace
 O HTML deve conter CSS e JavaScript clássico inline. Bibliotecas podem ser incorporadas no HTML, respeitando suas licenças. Não use script src, ES modules/import, links CSS externos, iframe ou recursos remotos. Não há acesso a chrome.*, DOM do núcleo, cookies ou armazenamento do perfil da extensão.
 Imagens/fontes/áudio locais podem ser referidos por caminho de pacote nos atributos src ou por Caixota.asset("assets/imagem.png").
 Extensões de mídia aceitas: PNG/JPEG/WebP, WOFF/WOFF2/TTF/OTF, WAV/MP3/OGG.
-Módulos não recebem automaticamente arquivos, notas, perfil ou configurações confidenciais do núcleo.
+Módulos não recebem automaticamente arquivos, notas ou configurações confidenciais do núcleo.
 O host envia apenas cores, fonte e preferências de apresentação. Não existe API persistente para dados de módulos na 0.1.0: reabrir a ferramenta reinicia seu estado. Dados digitados podem ser perdidos ao sair.
 
     <h2>Olá!</h2>
@@ -70,7 +70,7 @@ O ambiente suprime animações e transições CSS em eco ou efeitos desligados; 
 Nenhum código importado é executado no shell, background ou workbench original.
 
 ## Limites e segurança
-20 MB compactados; 40 MB descompactados; 8 MB por arquivo; 500 entradas; 64 KB por manifesto; 100 conteúdos; 24 módulos/80 MB descompactados no total.
+64 MiB compactados; 160 MiB descompactados; 64 MiB por arquivo; 500 entradas; 64 KB por manifesto; 100 conteúdos; 24 módulos/256 MiB descompactados no total.
 ZIP armazenado ou deflate, sem senha ou ZIP64. Caminhos absolutos, traversal, entradas duplicadas e CRC incorreto são rejeitados.
 IndexedDB armazena o pacote completo e a seleção, de forma atômica. Conteúdos não escolhidos não são registrados no catálogo. Desativação preserva pacote; desinstalação remove.
 O runtime usa página sandbox declarada no Manifest V3 e origem isolada. CSP bloqueia conexões fetch, recursos remotos, formulários e subframes; não são concedidos popups, top navigation, downloads ou origem compartilhada.

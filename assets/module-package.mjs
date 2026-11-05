@@ -1,9 +1,9 @@
 /* ZIP reader and schema for local modules. No imported code executes here. */
-export const CORE_VERSION='0.1.0', DEMO_CORE_VERSION=CORE_VERSION;
-export const KINDS=['category','theme','font','sound','tool','game'];
+export const CORE_VERSION='0.1.1', DEMO_CORE_VERSION=CORE_VERSION;
+export const KINDS=['category','theme','font','sound','tool','game','runtime'];
 export const BUILTIN_CATEGORIES=['text','images','video','pdf','generators','utilities','games','sorteio'];
 export const COLOR_KEYS=['bg','surface','surface-solid','surface-strong','surface-faint','title','text','muted','subtle','primary','primary-dark','primary-soft','stroke','line'];
-const MAX_ZIP=20*1024*1024,MAX_EXPANDED=40*1024*1024,MAX_FILE=8*1024*1024;
+const MAX_ZIP=64*1024*1024,MAX_EXPANDED=160*1024*1024,MAX_FILE=64*1024*1024;
 const decoder=new TextDecoder('utf-8',{fatal:true});
 const ident=/^(?!.*--)[a-z][a-z0-9-]{0,46}[a-z0-9]$/,version=/^\d+\.\d+\.\d+$/;
 export const keyOf=(moduleId,itemId)=>'mod-'+moduleId+'--'+itemId;
@@ -11,7 +11,7 @@ const text=(x,n=160)=>typeof x==='string'?x.trim().slice(0,n):'';
 export function compareVersions(a,b){const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++)if(x[i]!==y[i])return Math.sign(x[i]-y[i]);return 0;}
 function pathOK(p){return typeof p==='string'&&p.length<200&&!/[\\\x00-\x1f:]/.test(p)&&!p.startsWith('/')&&p.split('/').every(x=>x&&x!=='.'&&x!=='..');}
 export function validateModule(raw,assets={}){
- if(!raw||raw.schemaVersion!==2||!ident.test(raw.id)||!version.test(raw.version)||!version.test(raw.minCoreVersion))throw Error('Manifesto inválido. Use schemaVersion 2, ID simples e versões como 0.1.0.');
+ if(!raw||raw.schemaVersion!==2||!ident.test(raw.id)||!version.test(raw.version)||!version.test(raw.minCoreVersion))throw Error('Manifesto inválido. Use schemaVersion 2, ID simples e versões como 0.1.2.');
  if(raw.maxCoreVersion&&!version.test(raw.maxCoreVersion))throw Error('maxCoreVersion inválida.');
  if(!text(raw.name,80)||!Array.isArray(raw.contents)||!raw.contents.length||raw.contents.length>100)throw Error('Informe nome e entre 1 e 100 conteúdos.');
  const ids=new Set(),contents=raw.contents.map(x=>{
@@ -23,6 +23,14 @@ export function validateModule(raw,assets={}){
    if(!patterns[x.type].test(x.file))throw Error('Formato de arquivo incompatível: '+x.file);
    item.file=x.file;
   }
+  if(x.type==='runtime'){
+   if(!Array.isArray(x.files)||x.files.length>64||!x.files.includes(x.file)||!x.file?.endsWith('.js')||x.files.some(p=>!pathOK(p)||!Object.hasOwn(assets,p)))throw Error('Motor local inválido.');
+   item.file=x.file;item.files=[...new Set(x.files)];
+  }
+  if(x.type==='tool'){
+   if(x.requires!==undefined&&(!Array.isArray(x.requires)||x.requires.length>10||x.requires.some(id=>typeof id!=='string'||!ident.test(id))))throw Error('Dependências inválidas.');
+   item.requires=[...new Set(x.requires||[])];item.capabilities=Array.isArray(x.capabilities)?x.capabilities.filter(c=>['detect','inspect','javascript','cookies'].includes(c)):[];
+  }
   if(x.type==='theme'){
    if(!['light','dark'].includes(x.base)||!x.colors||typeof x.colors!=='object')throw Error('Tema precisa de base light/dark e cores.');
    item.base=x.base;item.colors={};
@@ -32,20 +40,22 @@ export function validateModule(raw,assets={}){
   if(x.type==='tool'||x.type==='game')item.category=x.category||(x.type==='game'?'games':'utilities');
   return item;
  });
+ for(const item of contents)if(item.requires?.some(id=>!contents.some(r=>r.id===id&&r.type==='runtime')))throw Error('Motor não encontrado no pacote.');
  const categories=new Set([...BUILTIN_CATEGORIES,...contents.filter(x=>x.type==='category').map(x=>x.id)]);
  for(const item of contents)if(item.category&&!categories.has(item.category))throw Error('Categoria não declarada: '+item.category);
- return {schemaVersion:2,id:raw.id,name:text(raw.name,80),version:raw.version,minCoreVersion:raw.minCoreVersion,maxCoreVersion:raw.maxCoreVersion||null,author:text(raw.author,100)||'Autor não informado',description:text(raw.description,300),contents,compatible:compareVersions(CORE_VERSION,raw.minCoreVersion)>=0&&(!raw.maxCoreVersion||compareVersions(CORE_VERSION,raw.maxCoreVersion)<=0)};
+ return {schemaVersion:2,id:raw.id,name:text(raw.name,80),version:raw.version,minCoreVersion:raw.minCoreVersion,maxCoreVersion:raw.maxCoreVersion||null,author:text(raw.author,100)||'Autor não informado',description:text(raw.description,300),contents,compatible:(compareVersions(CORE_VERSION,raw.minCoreVersion)>=0||(raw.id==='caixota-code'&&raw.minCoreVersion==='0.1.2'))&&(!raw.maxCoreVersion||compareVersions(CORE_VERSION,raw.maxCoreVersion)<=0)};
 }
 export function validateSelection(m,selected){
  const set=new Set(selected);if(!set.size)throw Error('Escolha pelo menos um conteúdo.');
  for(const id of set)if(!m.contents.some(x=>x.id===id))throw Error('Seleção inválida.');
  for(const x of m.contents)if(set.has(x.id)&&x.category&&!BUILTIN_CATEGORIES.includes(x.category)&&!set.has(x.category))throw Error('Selecione também a categoria de '+x.name+'.');
+ for(const x of m.contents)if(set.has(x.id)&&x.requires?.some(id=>!set.has(id)))throw Error('Selecione também todos os motores de '+x.name+'.');
  return [...set];
 }
 const crcTable=Uint32Array.from({length:256},(_,n)=>{for(let j=0;j<8;j++)n=n&1?0xedb88320^(n>>>1):n>>>1;return n>>>0;});
 function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=crcTable[(c^b)&255]^(c>>>8);return (c^0xffffffff)>>>0;}
 export async function parsePackage(file){
- if(!file||!/\.zip$/i.test(file.name)||file.size>MAX_ZIP)throw Error('Escolha um ZIP de até 20 MB.');
+ if(!file||!/\.zip$/i.test(file.name)||file.size>MAX_ZIP)throw Error('Escolha um ZIP de até 64 MB.');
  const bytes=new Uint8Array(await file.arrayBuffer()),dv=new DataView(bytes.buffer);
  if(bytes.length<22)throw Error('ZIP incompleto.');
  let end=-1;for(let i=bytes.length-22;i>=Math.max(0,bytes.length-65557);i--)if(dv.getUint32(i,true)===0x06054b50&&i+22+dv.getUint16(i+20,true)===bytes.length){end=i;break;}
@@ -81,4 +91,4 @@ export async function parsePackage(file){
  let raw;try{raw=JSON.parse(decoder.decode(assets[manifests[0]]));}catch{throw Error('Manifesto JSON inválido.');}
  return {...validateModule(raw,normalized),assets:normalized,bytes:total};
 }
-export async function parseModuleFiles(){throw Error('Na versão 0.1.0, selecione o pacote ZIP completo.');}
+export async function parseModuleFiles(){throw Error('Na versão 0.1.2, selecione o pacote ZIP completo.');}

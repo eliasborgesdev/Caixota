@@ -14,7 +14,6 @@ import { setupDiagnostics } from "./panel-diagnostics.mjs";
 const SETTINGS_KEY = "tremSettings";
 const USAGE_KEY = "tremUsage";
 const TOUR_KEY = "tremTutorialCompleted";
-const PROFILE_KEY = "caixotaLocalProfile";
 const LEGACY_CONVERTER_TO_IMAGE = {
   "converter-image": "image-convert",
   "converter-image-compress": "image-compress",
@@ -24,7 +23,6 @@ const LEGACY_CONVERTER_TO_IMAGE = {
 };
 const LEGACY_PDF_TO_COMBINE = new Set(["pdf-merge", "pdf-create", "pdf-image-to-pdf"]);
 const MAX_CUSTOM_FONT_BYTES = 3 * 1024 * 1024;
-const MAX_PROFILE_IMAGE_BYTES = 4 * 1024 * 1024;
 const PIX_KEY = "00020126580014BR.GOV.BCB.PIX0136931340dd-e492-4a34-bffe-02f26acd0fca5204000053039865802BR5925Elias Adelson Borges Mito6009SAO PAULO6214051091EZ1ltBsg63045C98";
 const STANDARD_THEMES = [
   { value: "dark", label: "Escuro" },
@@ -115,7 +113,6 @@ const TOUR_STEPS = [
   }
 ];
 
-const PROFILE_DEFAULTS = { name: "", bio: "", instructions: "", avatarData: "" };
 
 const DEFAULT_SETTINGS = {
   enabled: true,
@@ -259,12 +256,6 @@ const saveThemePresetButton = document.getElementById("saveThemePreset");
 const cancelThemePresetButton = document.getElementById("cancelThemePreset");
 const themeEditorTitle = document.getElementById("themeEditorTitle");
 const themePresetStatus = document.getElementById("themePresetStatus");
-const profileNameInput = document.getElementById("profileName");
-const profileBioInput = document.getElementById("profileBio");
-const profileInstructionsInput = document.getElementById("profileInstructions");
-const profileAvatarInput = document.getElementById("profileAvatarInput");
-const removeProfileAvatarButton = document.getElementById("removeProfileAvatar");
-const profilePhotoStatus = document.getElementById("profilePhotoStatus");
 const newsTrack = document.getElementById("newsTrack");
 const carouselDots = document.getElementById("carouselDots");
 const carouselPrevButton = document.getElementById("carouselPrev");
@@ -292,8 +283,6 @@ let organizationState = { favorites: [], imageFavorites: [], videoFavorites: [],
 let usageState = createEmptyToolUsage();
 let currentSettings = { ...DEFAULT_SETTINGS };
 let themePresetState = { items: [], activeId: "" };
-let profileState = { ...PROFILE_DEFAULTS };
-let profileSaveTimer;
 let themeEditorMode = "create";
 let tutorialIndex = 0;
 let tutorialPreviousFocus = null;
@@ -319,10 +308,9 @@ globalThis.CaixotaPanelBridge = Object.freeze({
 initialize();
 
 async function initialize() {
-  const stored = await chrome.storage.local.get([SETTINGS_KEY, USAGE_KEY, TOUR_KEY, PROFILE_KEY]);
+  const stored = await chrome.storage.local.get([SETTINGS_KEY, USAGE_KEY, TOUR_KEY]);
   const settings = normalizeSettings(stored[SETTINGS_KEY]);
   usageState = normalizeToolUsage(stored[USAGE_KEY]);
-  profileState = normalizeProfile(stored[PROFILE_KEY]);
   currentSettings = { ...settings };
   themePresetState = {
     items: settings.themePresets.map((preset) => ({ ...preset })),
@@ -340,7 +328,6 @@ async function initialize() {
   };
 
   applySettingsToInputs(settings);
-  applyProfileToInputs(profileState);
   translatePanel(resolveInterfaceLanguage(settings.interfaceLanguage));
 
   setupTabs();
@@ -357,13 +344,11 @@ async function initialize() {
   setupToolAliases();
   refreshToolLabels();
   setupUxEvents();
-  setupProfileEvents();
   setupDonation();
   setupCarousel();
   updateCategoryCounts();
   renderOrganization();
   refreshFavoriteButtons();
-  renderProfile();
   renderHomeDashboard();
   updateCurrentDate();
   updatePreviews();
@@ -409,12 +394,6 @@ async function initialize() {
       document.dispatchEvent(new CustomEvent("caixota:favorites-updated"));
       document.dispatchEvent(new CustomEvent("caixota:aliases-updated"));
     }
-    if (area === "local" && changes[PROFILE_KEY]) {
-      profileState = normalizeProfile(changes[PROFILE_KEY].newValue);
-      if (![profileNameInput, profileBioInput, profileInstructionsInput].includes(document.activeElement)) applyProfileToInputs(profileState);
-      renderProfile();
-      renderHomeDashboard();
-    }
   });
 
   await consumePendingMediaContext();
@@ -423,7 +402,7 @@ async function initialize() {
   });
 
   const requestedView = String(location.hash || "").replace(/^#/, "");
-  if (["home", "tools", "settings", "donation", "profile"].includes(requestedView) && !document.body.dataset.mediaContextOpened) navigateToView(requestedView, false);
+  if (["home", "tools", "settings", "donation"].includes(requestedView) && !document.body.dataset.mediaContextOpened) navigateToView(requestedView, false);
   if (stored[TOUR_KEY] !== true && !document.body.classList.contains("cx-workbench")) setTimeout(() => showTutorial(0), 100);
 }
 
@@ -458,22 +437,6 @@ function applySettingsToInputs(settings) {
     }
     if (maxNumber) maxNumber.value = String(maxValue);
   }
-}
-
-function normalizeProfile(value = {}) {
-  const profile = { ...PROFILE_DEFAULTS, ...(value && typeof value === "object" ? value : {}) };
-  return {
-    name: String(profile.name || "").trim().slice(0, 40),
-    bio: String(profile.bio || "").trim().slice(0, 240),
-    instructions: String(profile.instructions || "").slice(0, 1200),
-    avatarData: /^data:image\/(?:png|jpe?g|webp|gif);base64,/i.test(String(profile.avatarData || "")) ? String(profile.avatarData) : ""
-  };
-}
-
-function applyProfileToInputs(profile) {
-  if (profileNameInput) profileNameInput.value = profile.name;
-  if (profileBioInput) profileBioInput.value = profile.bio;
-  if (profileInstructionsInput) profileInstructionsInput.value = profile.instructions;
 }
 
 function normalizeSettings(value = {}) {
@@ -731,13 +694,13 @@ function setupSettingsCategories() {
 }
 
 function navigateToView(view, updateHash = true) {
-  const normalized = ["home", "tools", "settings", "donation", "profile"].includes(view) ? view : "home";
+  const normalized = ["home", "tools", "settings", "donation"].includes(view) ? view : "home";
   const previous = document.querySelector(".app-view.is-active")?.dataset.view || "home";
   if (previous === "tools" && normalized !== "tools") {
     document.dispatchEvent(new CustomEvent("caixota:reset-direct-tools", { detail: { category: "all" } }));
   }
   document.querySelectorAll(".app-view").forEach((section) => section.classList.toggle("is-active", section.dataset.view === normalized));
-  document.querySelectorAll(".sidebar-button, .profile-nav").forEach((button) => {
+  document.querySelectorAll(".sidebar-button").forEach((button) => {
     const active = button.dataset.navView === normalized;
     button.classList.toggle("is-active", active);
     if (active) button.setAttribute("aria-current", "page");
@@ -1977,96 +1940,6 @@ function openToolTarget(category, toolId) {
   return true;
 }
 
-function setupProfileEvents() {
-  const updateTextProfile = () => {
-    profileState = {
-      ...profileState,
-      name: String(profileNameInput?.value || "").slice(0, 40),
-      bio: String(profileBioInput?.value || "").slice(0, 240),
-      instructions: String(profileInstructionsInput?.value || "").slice(0, 1200)
-    };
-    renderProfile();
-    renderHomeDashboard();
-    scheduleProfileSave();
-  };
-  [profileNameInput, profileBioInput, profileInstructionsInput].forEach((input) => input?.addEventListener("input", updateTextProfile));
-
-  profileAvatarInput?.addEventListener("change", async () => {
-    const file = profileAvatarInput.files?.[0];
-    profileAvatarInput.value = "";
-    if (!file) return;
-    if (!/^image\/(?:png|jpe?g|webp|gif)$/i.test(file.type)) {
-      setProfilePhotoStatus("Use uma imagem PNG, JPEG, WebP ou GIF.", true);
-      return;
-    }
-    if (file.size > MAX_PROFILE_IMAGE_BYTES) {
-      setProfilePhotoStatus("A imagem precisa ter no máximo 4 MB.", true);
-      return;
-    }
-    try {
-      setProfilePhotoStatus("Preparando a foto…", false);
-      profileState.avatarData = await prepareProfileImage(file);
-      await saveProfile();
-      renderProfile();
-      renderHomeDashboard();
-      setProfilePhotoStatus("Foto atualizada ✓", false);
-    } catch (_error) {
-      setProfilePhotoStatus("Não foi possível usar essa imagem.", true);
-    }
-  });
-
-  removeProfileAvatarButton?.addEventListener("click", async () => {
-    profileState.avatarData = "";
-    await saveProfile();
-    renderProfile();
-    renderHomeDashboard();
-    setProfilePhotoStatus("Foto removida.", false);
-  });
-}
-
-function scheduleProfileSave() {
-  clearTimeout(profileSaveTimer);
-  profileSaveTimer = setTimeout(() => saveProfile().catch(() => {}), 260);
-}
-
-async function saveProfile() {
-  profileState = normalizeProfile(profileState);
-  await chrome.storage.local.set({ [PROFILE_KEY]: profileState });
-  showSaveStatus("Perfil salvo localmente ✓");
-}
-
-function prepareProfileImage(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error("Falha ao ler a imagem."));
-    reader.onload = () => {
-      const image = new Image();
-      image.onerror = () => reject(new Error("Imagem inválida."));
-      image.onload = () => {
-        const maximum = 512;
-        const scale = Math.min(1, maximum / Math.max(image.naturalWidth || 1, image.naturalHeight || 1));
-        const width = Math.max(1, Math.round((image.naturalWidth || 1) * scale));
-        const height = Math.max(1, Math.round((image.naturalHeight || 1) * scale));
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const context = canvas.getContext("2d");
-        if (!context) return reject(new Error("Canvas indisponível."));
-        context.drawImage(image, 0, 0, width, height);
-        const webp = canvas.toDataURL("image/webp", .86);
-        resolve(webp.startsWith("data:image/webp") ? webp : canvas.toDataURL("image/png"));
-      };
-      image.src = String(reader.result || "");
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function setProfilePhotoStatus(message, isError) {
-  if (!profilePhotoStatus) return;
-  profilePhotoStatus.textContent = message;
-  profilePhotoStatus.classList.toggle("is-error", Boolean(isError));
-}
 
 function setupDonation() {
   showPixDonationButton?.addEventListener("click", () => {
@@ -2118,28 +1991,6 @@ async function copyTextToClipboard(text) {
   if (!copied) throw new Error("Clipboard indisponível");
 }
 
-function renderProfile() {
-  const name = profileState.name || "Seu perfil";
-  const bio = profileState.bio || "Adicione um nome e conte um pouco sobre você.";
-  const previewName = document.getElementById("profilePreviewName");
-  const previewBio = document.getElementById("profilePreviewBio");
-  if (previewName) previewName.textContent = name;
-  if (previewBio) previewBio.textContent = bio;
-  updateAvatarPair("profileAvatarImage", "profileAvatarPlaceholder");
-  updateAvatarPair("sidebarAvatarImage", "sidebarAvatarPlaceholder");
-  if (removeProfileAvatarButton) removeProfileAvatarButton.disabled = !profileState.avatarData;
-}
-
-function updateAvatarPair(imageId, placeholderId) {
-  const image = document.getElementById(imageId);
-  const placeholder = document.getElementById(placeholderId);
-  if (!image || !placeholder) return;
-  image.hidden = !profileState.avatarData;
-  placeholder.hidden = Boolean(profileState.avatarData);
-  if (profileState.avatarData) image.src = profileState.avatarData;
-  else image.removeAttribute("src");
-}
-
 function renderHomeDashboard() {
   const settings = currentSettings || DEFAULT_SETTINGS;
   const trackedTools = getTrackedTools();
@@ -2149,10 +2000,8 @@ function renderHomeDashboard() {
   const favoriteCount = ["favorites", "imageFavorites", "videoFavorites", "pdfFavorites", "generatorFavorites"].reduce((total, key) => total + organizationState[key].length, 0);
   const totalUsage = ["text", "image", "video", "pdf", "generator"].reduce((total, mode) => total + Object.values(usageState.counts[mode] || {}).reduce((sum, count) => sum + Number(count || 0), 0), 0);
 
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Bom dia" : (hour < 18 ? "Boa tarde" : "Boa noite");
   const welcomeTitle = document.getElementById("welcomeTitle");
-  if (welcomeTitle) welcomeTitle.textContent = profileState.name ? `${greeting}, ${profileState.name}` : "Bem-vindo à Caixota";
+  if (welcomeTitle) welcomeTitle.textContent = "Bem-vindo à Caixota";
 
   setText("enabledToolCount", `${enabledCount} de ${totalTools}`);
   setText("totalUsageMetric", String(totalUsage));

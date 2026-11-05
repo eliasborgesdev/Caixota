@@ -1,4 +1,4 @@
-import {translateShell,languageCode} from './assets/shell-locale.mjs';
+import {translateShell,languageCode} from '../assets/shell-locale.mjs';
 const THEMES=new Set(['glass-light','glass-dark','oled','warm','aero','retro-90','cyberpunk','pastel','matrix']);
 const FONTS={system:'system-ui, sans-serif',inter:'Inter,system-ui,sans-serif',manrope:'Manrope,system-ui,sans-serif',trebuchet:'Trebuchet MS,sans-serif',georgia:'Georgia,serif',roboto:'Roboto,Arial,sans-serif',montserrat:'Montserrat,Arial,sans-serif',poppins:'Poppins,Arial,sans-serif',opensans:'Open Sans,Arial,sans-serif',lato:'Lato,Arial,sans-serif',pixel:'Consolas,monospace'};
 async function syncPage(){

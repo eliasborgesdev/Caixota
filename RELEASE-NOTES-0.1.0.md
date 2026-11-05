@@ -22,6 +22,6 @@ Extraia o ZIP da extensão, abra a página de extensões do navegador, ative o m
 
 ## Avisos
 
-Caixota é gratuita; doações são voluntárias. O código usa licença própria de código consultável, com restrições de redistribuição. Ela não é uma licença open source OSI. Algumas ferramentas enviam dados a serviços externos quando o usuário escolhe esses recursos. Consulte `LICENSE.md`, `PRIVACY.md`, `SECURITY.md` e `THIRD-PARTY-NOTICES.md`.
+A licença própria permite modificar e redistribuir a Caixota para fins não comerciais, sob as condições de créditos, doações e indicação do projeto original descritas em `LICENSE.md`.
 
 A revisão local não certifica a segurança da extensão. O manifesto declara acesso amplo a páginas, e ainda é necessário testar a extensão instalada no navegador de destino. Consulte `docs/REVISAO-SEGURANCA-0.1.0.md`.

@@ -4,7 +4,7 @@
   const USAGE_KEY = "tremUsage";
   const SAVED_PALETTES_KEY = "tremSavedPalettes";
   const MAX_RECENT_TOOLS = 10;
-  const MAX_SELECTION_LENGTH = 5000;
+  const MAX_SELECTION_LENGTH = 15000;
   const MESSAGE_TIMEOUT_MS = 18000;
   const DICTIONARY_LEARNING_KEY = "caixotaDictionaryLearningV1";
 
@@ -307,7 +307,7 @@
   const UNIT_PATTERN = buildUnitPattern();
 
   let settings = { ...DEFAULT_SETTINGS };
-  let selectedText = "";
+  let selectedText = "",iaSelection=null;
   let selectionRect = null;
   let operationToken = 0;
   let pointerDownStartedInside = false;
@@ -337,6 +337,7 @@
     await Promise.all([loadSettings(), loadToolUsage()]);
 
     chrome.storage.onChanged.addListener((changes, area) => {
+      if(area==="local"&&changes.tiraTeima&&activeMenuMode==="text")queueMicrotask(()=>{if(activeMenuMode==="text"&&document.getElementById(ROOT_ID))renderActionMenu();});
       if (area === "local" && changes[SETTINGS_KEY]) {
         settings = normalizeLoadedSettings(changes[SETTINGS_KEY].newValue);
         if (!settings.enabled) removePanel();
@@ -510,6 +511,8 @@
   }
 
   function getCurrentTextSelection() {
+    const ia = globalThis.__TT?.capturarSelecao();
+    if(ia?.edit?.tipo==="campo")return {text:ia.texto,rect:ia.rect};
     const selection = window.getSelection();
     const text = selection?.toString()?.trim();
     if (!selection || selection.rangeCount === 0 || !text || text.length > MAX_SELECTION_LENGTH) return null;
@@ -530,6 +533,7 @@
       return;
     }
 
+    iaSelection=globalThis.__TT?.capturarSelecao()||null;
     selectedText = capture.text;
     selectionRect = capture.rect;
     currentImageContext = null;
@@ -571,6 +575,7 @@
       removePanel();
       return;
     }
+    iaSelection=globalThis.__TT?.capturarSelecao()||iaSelection;
     selectedText = text;
     selectionRect = capture?.rect || selectionRect || centeredReferenceRect();
     activeMenuMode = "text";
@@ -1575,6 +1580,12 @@ function renderImageActionMenu(activeFolderId = null) {
 
   function getToolDefinitions() {
     return applyToolAliases("text", [
+      ...(globalThis.__TT?.atalhos(selectedText)||[]).map(f=>({id:'ia-'+f.id,label:f.label,description:f.description,icon:'caixota',folder:'IA',enabled:true,network:'required',keywords:['IA'],handler:()=>{
+        const text=selectedText,selection=iaSelection,root=document.getElementById(ROOT_ID),menu=root?.querySelector('.trem-menu')||root;
+        const css=getComputedStyle(menu),vars=getComputedStyle(root);
+        const appearance={bg:css.backgroundColor,fg:vars.getPropertyValue('--trem-v3-text').trim()||css.color,fg2:vars.getPropertyValue('--trem-v3-muted').trim(),line:css.borderTopColor,accent:vars.getPropertyValue('--trem-v3-accent').trim()||vars.getPropertyValue('--trem-ui-accent').trim(),font:css.fontFamily,quiet:root.dataset.v3Quality==='eco'||root.dataset.v3Effects==='off'||root.dataset.effects==='off'};
+        removePanel();globalThis.__TT.abrirSelecao(f.id,text,selection,appearance);
+      }})),
       { id: "currency", label: "Conversor de Moedas", icon: "currency", folder: "Conversão", enabled: settings.currencyEnabled, network: "required", description: "Converta valores por símbolo, código ou nome da moeda com a cotação mais recente.", keywords: ["câmbio", "cambio", "moeda", "dinheiro", "dólar", "dolar", "dólares", "dólar australiano", "iene", "ienes", "reais", "euro", "currency", "converter"], handler: convertSelectedCurrency },
       { id: "calculate", label: "Calculadora", icon: "calculate", folder: "Utilidades", enabled: settings.calculatorEnabled, description: "Resolva contas com parênteses e porcentagens.", keywords: ["calcular", "cálculo", "calculo", "conta", "matemática", "matematica", "math", "somar"], handler: calculateSelection },
       { id: "encoder", label: "Codificar Texto", icon: "encode", folder: "Conversão", enabled: settings.encoderEnabled, description: "Codifique ou restaure Base64, URL, HTML, Unicode, Morse e binário.", keywords: ["codificar", "base64", "encode", "decode", "url", "html", "unicode", "decodificar"], handler: encodeSelection },
@@ -1825,7 +1836,7 @@ function renderImageActionMenu(activeFolderId = null) {
     row.className = "trem-action-row";
     row.setAttribute("role", "listitem");
     row.classList.toggle("is-search-result", Boolean(searchQuery));
-    const button = createMenuButton({ id: tool.id, icon: tool.icon || "caixota", label: tool.label, meta, network: tool.network || "offline", highlightQuery: searchQuery });
+    const button = createMenuButton({ id: tool.id, icon: tool.icon || "caixota", label: tool.label, meta, badge:tool.id.startsWith("ia-")?"IA":"", network: tool.network || "offline", highlightQuery: searchQuery });
     button.classList.add("trem-action-main");
     bindToolTooltip(button, tool.description || "");
     button.addEventListener("click", (event) => {
@@ -7015,6 +7026,7 @@ function rgbToHex(r, g, b) {
     applyCustomThemeVariables(root);
     root.addEventListener("mousedown", (event) => event.stopPropagation());
     document.documentElement.appendChild(root);
+    document.dispatchEvent(new Event("cx-context-root"));
     return root;
   }
 

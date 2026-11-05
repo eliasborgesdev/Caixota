@@ -8,11 +8,11 @@ assert.equal(manifest.version,'0.3.18');
 assert.equal(manifest.description,'Já pensou se todas as ferramentas mais úteis da internet se reunissem em um único lugar? Conheça a Caixota! :D');
 assert.equal(DEFAULT_UI.theme,'glass-light','Primeira instalação começa no tema claro');
 assert.equal(normalizeUi().theme,'glass-light');
-for(const file of ['background.js','panel.js','content.js']){
+for(const file of ['scripts/background.js','scripts/panel.js','scripts/content.js']){
  assert.match(read(file),/const DEFAULT_SETTINGS = \{[\s\S]*?theme: \"light\"/,`Padrão claro no ${file}`);
 }
-assert.match(read('context-test-page.mjs'),/THEMES.has\(ui.theme\)\?ui.theme:'glass-light'/);
-assert.match(read('content-v3.js'),/theme:'glass-light'/);
+assert.match(read('scripts/context-test-page.mjs'),/THEMES.has\(ui.theme\)\?ui.theme:'glass-light'/);
+assert.match(read('scripts/content-v3.js'),/theme:'glass-light'/);
 assert.match(read('workbench.html'),/class=\"cx-workbench\" data-theme=\"light\"/);
 assert.equal(normalizeUi({theme:'oled'}).theme,'oled','Não apagar escolhas anteriores');
 assert.equal(normalizeUi({theme:'cyberpunk'}).theme,'cyberpunk');
@@ -36,7 +36,7 @@ for (const lang of ['en','de','es','fr','it','nl','ru','ko','pl']) {
  assert.notEqual(t('Traduções em fase de testes',lang),'Traduções em fase de testes',`Aviso localizado: ${lang}`);
  assert.notEqual(t('Mostrar todos os botões',lang),'Mostrar todos os botões',`Configuração localizada: ${lang}`);
 }
-const shell=read('shell.js'),bridge=read('workbench-bridge.js'),skin=read('workbench-skin.css'),theme=read('themes-v3.css');
+const shell=read('scripts/shell.js'),bridge=read('scripts/workbench-bridge.js'),skin=read('workbench-skin.css'),theme=read('themes-v3.css');
 assert.match(shell,/data-v3-topbar-all/);
 assert.match(shell,/data-v3-topbar="\$\{key\}"/);
 assert.match(shell,/showTopbar\('search'\)/);

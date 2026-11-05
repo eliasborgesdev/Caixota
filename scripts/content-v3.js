@@ -10,6 +10,7 @@
     node.dataset.v3Effects=ui.effects!==false?'on':'off';
     node.dataset.v3Font=ui.font||'system';
   };
+  document.addEventListener("cx-context-root",update);
   try{
    chrome.storage.local.get('caixotaUiV3').then(data=>{ui={...ui,...(data.caixotaUiV3||{})};update();});
    chrome.storage.onChanged.addListener((changes,area)=>{if(area==='local'&&changes.caixotaUiV3){ui={...ui,...(changes.caixotaUiV3.newValue||{})};update();}});

@@ -13,11 +13,11 @@ assert.equal(detectLink('https://www.pinterest.com/pin/123456789/').provider.id,
 assert.equal(detectLink('https://pin.it/AbCd2').provider.id,'pinterest');
 assert.equal(detectLink('https://br.pinterest.com/pin/123/').provider.id,'pinterest');
 const root=new URL('../',import.meta.url);const read=x=>fs.readFileSync(new URL(x,root),'utf8');
-const shell=read('shell.js');assert(shell.includes("category:'utilities'"));assert(shell.includes("case 'dice':return gameScreen(diceMarkup"));assert(shell.includes("category:queuedTool.id==='generator-wheel'?'generators'"));
+const shell=read('scripts/shell.js');assert(shell.includes("category:'utilities'"));assert(shell.includes("case 'dice':return gameScreen(diceMarkup"));assert(shell.includes("category:queuedTool.id==='generator-wheel'?'generators'"));
 assert(shell.includes("case 'termo':return gameScreen(termoMarkup"));
 assert(shell.includes("FUN_CATEGORIES=['games','sorteio']"));
-assert(read('panel-catalog.mjs').includes('id: "pdf-office"'));
-assert(read('video-tools.js').includes('video-editor-timeline'));
+assert(read('scripts/panel-catalog.mjs').includes('id: "pdf-office"'));
+assert(read('scripts/video-tools.js').includes('video-editor-timeline'));
 assert(read('productivity-tools.css').includes('background:var(--swatch-color)!important'));
 assert(read('assets/speed-test.mjs').includes('async function download(deadline)'));
 console.log('OK: expressões de RPG, distribuição dos dados, Pinterest e integração dos novos recursos.');

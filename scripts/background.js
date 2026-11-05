@@ -1,4 +1,4 @@
-importScripts('caixota-volume-engine.js');
+
 const SETTINGS_KEY = "tremSettings";
 const USAGE_KEY = "tremUsage";
 const PASSWORD_VAULT_KEY = "tremPasswordVault";
@@ -268,6 +268,7 @@ const LANGUAGE_FLAGS = {
 
 chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === "install") await chrome.storage.local.set({caixotaTutorialPending034:true});
+  if (details.reason === "install") chrome.tabs.create({ url: chrome.runtime.getURL(PANEL_PATH), active: true }).catch(console.warn);
   const settings = await getSettings();
   const usage = await getToolUsage();
   await chrome.storage.local.set({ [SETTINGS_KEY]: settings, [USAGE_KEY]: usage });

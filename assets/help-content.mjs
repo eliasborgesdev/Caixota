@@ -18,11 +18,11 @@ export const FAQ=[
  ],
  [
   "Quais dados ficam salvos?",
-  "Preferências, favoritos, perfil, notas e alguns rascunhos ficam no perfil do navegador. Pacotes instalados ficam no IndexedDB da extensão. O armazenamento local não é necessariamente criptografado. Não há conta nem backup em nuvem da Caixota.",
+  "Preferências, favoritos, notas e alguns rascunhos ficam no perfil do navegador. Pacotes instalados ficam no IndexedDB da extensão. O armazenamento local não é necessariamente criptografado. Não há conta nem backup em nuvem da Caixota.",
   "What data is saved?",
-  "Preferences, favorites, profile, notes and some drafts stay in your browser profile. Installed packages are stored in the extension’s IndexedDB. Local storage is not necessarily encrypted. Caixota has no account or cloud backup.",
+  "Preferences, favorites, notes and some drafts stay in your browser profile. Installed packages are stored in the extension’s IndexedDB. Local storage is not necessarily encrypted. Caixota has no account or cloud backup.",
   "¿Qué datos se guardan?",
-  "Las preferencias, los favoritos, el perfil, las notas y algunos borradores quedan en el perfil del navegador. Los paquetes instalados se guardan en IndexedDB. El almacenamiento local no está necesariamente cifrado. Caixota no tiene cuenta ni copia de seguridad en la nube."
+  "Las preferencias, los favoritos, las notas y algunos borradores quedan en el perfil del navegador. Los paquetes instalados se guardan en IndexedDB. El almacenamiento local no está necesariamente cifrado. Caixota no tiene cuenta ni copia de seguridad en la nube."
  ],
  [
   "Quando meus dados podem sair do navegador?",
@@ -74,11 +74,11 @@ export const FAQ=[
  ],
  [
   "Posso modificar ou redistribuir a Caixota?",
-  "O código autoral é disponibilizado para consulta e uso gratuito, com direitos reservados a Elias Adelson Borges Mitouso. Sem autorização escrita, não redistribua ou comercialize a Caixota, publique versões modificadas, retire créditos ou altere a área de doações. Não atribua a autoria a si nem distribua arquivos maliciosos. Consulte LICENSE.md; componentes de terceiros seguem suas próprias licenças.",
+  "Você pode modificar e redistribuir a Caixota para fins não comerciais. Preserve os créditos originais de Elias Adelson Borges Mitouso e a página de doações com o Pix e o QR Code originais. Ao distribuir uma versão modificada, mostre o link da Caixota original dentro da extensão e antes do download ou da instalação. Consulte LICENSE.md.",
   "Can I modify or redistribute Caixota?",
-  "The author’s code is available for inspection and free use, with rights reserved to Elias Adelson Borges Mitouso. Without written permission, do not redistribute or sell Caixota, publish modified versions, remove credits or change the donation area. Do not claim authorship or distribute malicious files. See LICENSE.md; third-party components retain their own licenses.",
+  "You may modify and redistribute Caixota for non-commercial purposes. Keep the original credits to Elias Adelson Borges Mitouso and the donation page with its original Pix details and QR code. When distributing a modified version, show the original project link inside the extension and before download or installation. See LICENSE.md.",
   "¿Puedo modificar o redistribuir Caixota?",
-  "El código del autor está disponible para consulta y uso gratuito, con derechos reservados a Elias Adelson Borges Mitouso. Sin autorización escrita, no redistribuyas ni vendas Caixota, publiques versiones modificadas, retires créditos ni cambies el área de donaciones. No te atribuyas su autoría ni distribuyas archivos maliciosos. Consulta LICENSE.md; los componentes de terceros mantienen sus licencias."
+  "Puedes modificar y redistribuir Caixota para fines no comerciales. Conserva los créditos originales de Elias Adelson Borges Mitouso y la página de donaciones con el Pix y el código QR originales. Al distribuir una versión modificada, muestra el enlace al proyecto original dentro de la extensión y antes de la descarga o instalación. Consulta LICENSE.md."
  ],
  [
   "Como instalo um módulo?",
@@ -124,11 +124,11 @@ export const LEGAL=[
  ],
  [
   "Licença autoral e créditos",
-  "Caixota © 2026 Elias Adelson Borges Mitouso. Código disponível para consulta sob licença própria de uso gratuito, com direitos reservados. Sem autorização escrita, são vedadas a redistribuição, a venda, a publicação de versões modificadas, a remoção de créditos, a alteração da área de doações e a falsa atribuição de autoria. Não distribua arquivos maliciosos usando o nome do projeto. Consulte LICENSE.md. Estas restrições se aplicam ao material autoral, respeitando direitos e exceções previstos em lei.",
+  "Você pode modificar e redistribuir a Caixota para fins não comerciais. Preserve os créditos originais de Elias Adelson Borges Mitouso e a página de doações com o Pix e o QR Code originais. Ao distribuir uma versão modificada, mostre o link da Caixota original dentro da extensão e antes do download ou da instalação. Consulte LICENSE.md.",
   "Author’s license and credits",
-  "Caixota © 2026 Elias Adelson Borges Mitouso. Source is available for inspection under a custom free-use license with rights reserved. Without written permission, redistribution, sale, publication of modified versions, removal of credits, changes to the donation area and false attribution are prohibited. Do not distribute malicious files using the project’s name. See LICENSE.md. These restrictions cover the author’s material, subject to statutory rights and exceptions.",
+  "You may modify and redistribute Caixota for non-commercial purposes. Keep the original credits to Elias Adelson Borges Mitouso and the donation page with its original Pix details and QR code. When distributing a modified version, show the original project link inside the extension and before download or installation. See LICENSE.md.",
   "Licencia del autor y créditos",
-  "Caixota © 2026 Elias Adelson Borges Mitouso. Código disponible para consulta bajo una licencia propia de uso gratuito con derechos reservados. Sin autorización escrita, se prohíben la redistribución, venta, publicación de versiones modificadas, retirada de créditos, cambios en las donaciones y falsa atribución. No distribuyas archivos maliciosos con el nombre del proyecto. Consulta LICENSE.md. Estas restricciones afectan al material del autor, respetando los derechos y excepciones legales."
+  "Puedes modificar y redistribuir Caixota para fines no comerciales. Conserva los créditos originales de Elias Adelson Borges Mitouso y la página de donaciones con el Pix y el código QR originales. Al distribuir una versión modificada, muestra el enlace al proyecto original dentro de la extensión y antes de la descarga o instalación. Consulta LICENSE.md."
  ],
  [
   "O que pode pertencer a terceiros?",

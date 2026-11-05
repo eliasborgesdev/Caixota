@@ -1,5 +1,5 @@
-import gifuct from "./vendor/gifuct.min.mjs";
-import { GIFEncoder, quantize, applyPalette } from "./vendor/gifenc.esm.js";
+import gifuct from "../vendor/gifuct.min.mjs";
+import { GIFEncoder, quantize, applyPalette } from "../vendor/gifenc.esm.js";
 import { IMAGE_TOOL_CATALOG } from "./panel-catalog.mjs";
 
 export function initialize(document, window, bridge){

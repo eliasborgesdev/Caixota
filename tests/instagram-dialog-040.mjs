@@ -4,7 +4,7 @@ import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const {chromium}=require('playwright');
 const css=readFileSync(new URL('../instagram-progress.css',import.meta.url),'utf8');
-const source=readFileSync(new URL('../instagram-progress.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../scripts/instagram-progress.js',import.meta.url),'utf8');
 
 const browser=await chromium.launch({
   executablePath:process.env.CAIXOTA_CHROMIUM||'/workspace/scratch/1890ef31a4d1/tests/browser/chromium',

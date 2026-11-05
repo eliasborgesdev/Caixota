@@ -6,11 +6,11 @@ export const FAVORITE_KEYS=Object.freeze({text:'favorites',images:'imageFavorite
 export const THEMES=(['glass-light','glass-dark','oled','warm','aero','retro-90','cyberpunk','pastel','matrix','psx']);
 export const FONTS=(['system','inter','manrope','trebuchet','georgia','roboto','montserrat','poppins','opensans','lato','pixel','vhs']);
 export const QUALITY=Object.freeze(['auto','full','eco']);
-export const DEFAULT_TOPBAR=Object.freeze({search:true,performance:true,language:true,notifications:true,sound:true,theme:true,profile:true});
+export const DEFAULT_TOPBAR=Object.freeze({search:true,performance:true,language:true,notifications:true,sound:true,theme:true});
 export const DEFAULT_UI=Object.freeze({theme:'glass-light',font:'system',quality:'auto',effects:true,sound:true,volume:25,shortcut:'Ctrl+Period',organizeSidebar:true,topbar:DEFAULT_TOPBAR});
 export const LEGACY_THEME={ 'glass-light':'light','glass-dark':'dark',oled:'oled',warm:'light',aero:'light','retro-90':'light',cyberpunk:'dark',pastel:'light',matrix:'dark',psx:'dark'};
 export const CATEGORY_TO_USAGE={text:'text',images:'image',video:'video',pdf:'pdf',generators:'generator',utilities:'utilities',sorteio:'sorteio',games:'games'};
-const safeRead=()=>chrome.storage.local.get([UI_KEY,SETTINGS_KEY,'tremUsage','caixotaLocalProfile']);
+const safeRead=()=>chrome.storage.local.get([UI_KEY,SETTINGS_KEY,'tremUsage']);
 export function normalizeUi(input={}){return {
  theme:THEMES.includes(input?.theme)?input.theme:DEFAULT_UI.theme,
  font:FONTS.includes(input?.font)?input.font:DEFAULT_UI.font,
@@ -24,7 +24,7 @@ export function normalizeUi(input={}){return {
  topbar:Object.fromEntries(Object.keys(DEFAULT_TOPBAR).map(key=>[key,input?.topbar?.[key]!==false]))
 };}
 export async function loadSnapshot(){let data=await safeRead();return {
- ui:normalizeUi(data[UI_KEY]), settings:data[SETTINGS_KEY]||{}, usage:data.tremUsage||{}, profile:data.caixotaLocalProfile||{}
+ ui:normalizeUi(data[UI_KEY]), settings:data[SETTINGS_KEY]||{}, usage:data.tremUsage||{}
 };}
 export async function updateUi(patch){
  const data=await chrome.storage.local.get([UI_KEY,SETTINGS_KEY]);

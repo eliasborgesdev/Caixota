@@ -1,6 +1,7 @@
+import {attachBridge} from './module-bridge.mjs';
 import {keyOf,COLOR_KEYS,BUILTIN_CATEGORIES} from './module-package.mjs';
 import {escapeHtml as e} from './module-ui.mjs';
-let records=[],faces=[],soundData='',mountedFrame=null,listener=null;
+let records=[],faces=[],soundData='',mountedFrame=null,listener=null,bridge=null;
 export function moduleRecords(){return records;}
 export function activeContents(){return records.filter(m=>m.enabled).flatMap(m=>m.contents.filter(x=>m.selected.includes(x.id)).map(x=>({...x,moduleId:m.id,key:keyOf(m.id,x.id),pkg:m})));}
 export function dataUrl(bytes,path){const type=/\.woff2$/i.test(path)?'font/woff2':/\.woff$/i.test(path)?'font/woff':/\.(ttf|otf)$/i.test(path)?'font/ttf':/\.wav$/i.test(path)?'audio/wav':/\.mp3$/i.test(path)?'audio/mpeg':/\.ogg$/i.test(path)?'audio/ogg':/\.png$/i.test(path)?'image/png':/\.jpe?g$/i.test(path)?'image/jpeg':/\.webp$/i.test(path)?'image/webp':'application/octet-stream';let bin='';for(let n=0;n<bytes.length;n+=8192)bin+=String.fromCharCode(...bytes.subarray(n,n+8192));return 'data:'+type+';base64,'+btoa(bin);}
@@ -26,20 +27,27 @@ export function moduleAppearance(ui){
 export function themePayload(ui){
  const cs=getComputedStyle(document.documentElement),colors={};for(const key of COLOR_KEYS)colors[key]=cs.getPropertyValue('--'+key).trim();
  const f=activeContents().find(x=>x.key===ui.font&&x.type==='font');
- return {colors,font:getComputedStyle(document.body).fontFamily,fontFace:f?{family:f.key,url:dataUrl(f.pkg.assets[f.file],f.file)}:null,quality:ui.quality,effects:ui.effects,sound:ui.sound,volume:ui.volume};
+ return {colors,font:getComputedStyle(document.body).fontFamily,fontFace:f?{family:f.key,url:dataUrl(f.pkg.assets[f.file],f.file)}:null,language:ui.language,quality:ui.quality,effects:ui.effects,sound:ui.sound,volume:ui.volume};
 }
 export function moduleToolMarkup(tool){return '<section class="page-entry"><span class="overline">MÓDULO · LOCAL</span><h1 data-no-translate>'+e(tool.label)+'</h1><p data-no-translate>'+e(tool.description)+'</p></section><section class="cx-tool-workspace"><p id="moduleRuntimeStatus" role="status">Preparando ferramenta…</p><iframe class="cx-module-frame" id="moduleRuntimeFrame" src="module-runtime.html" sandbox="allow-scripts" allow="camera \'none\'; microphone \'none\'; geolocation \'none\'; clipboard-read \'none\'; clipboard-write \'none\'" title="'+e(tool.label)+'"></iframe><button class="button-outline" data-route="modules">Fechar e gerenciar módulo</button></section>';}
-export function stopModuleRuntime(){if(listener)window.removeEventListener('message',listener);listener=null;mountedFrame=null;}
+export function stopModuleRuntime(){if(listener)window.removeEventListener('message',listener);listener=null;bridge?.close();bridge=null;mountedFrame=null;}
 export function updateModuleRuntime(ui){mountedFrame?.contentWindow?.postMessage({source:'caixota-host',type:'preferences',preferences:themePayload(ui)},'*');}
 export function bindModuleRuntime(tool,ui,sound){
  stopModuleRuntime();const frame=document.getElementById('moduleRuntimeFrame');if(!frame)return;
  mountedFrame=frame;const pkg=records.find(x=>x.id===tool.moduleId),item=pkg?.contents.find(x=>keyOf(pkg.id,x.id)===tool.id);
  if(!pkg?.enabled||!item)return;
- let loaded=false,lastSound=0;
+ const api=bridge=attachBridge(pkg,item,frame);
+ const engines=pkg.contents.filter(x=>x.type==='runtime'&&pkg.selected.includes(x.id)&&item.requires?.includes(x.id));
+ const engineFiles=Object.fromEntries(engines.flatMap(e=>e.files.map(p=>[p,pkg.assets[p]])));
+ let loaded=false,lastSound=0,requests=0;
  listener=event=>{
   if(event.source!==frame.contentWindow||event.data?.source!=='caixota-module')return;
   const d=event.data;
-  if(d.type==='ready'&&!loaded){loaded=true;frame.contentWindow.postMessage({source:'caixota-host',type:'load',html:new TextDecoder().decode(pkg.assets[item.file]),assets:Object.fromEntries(Object.entries(pkg.assets).filter(([p])=>/\.(png|jpg|jpeg|webp|woff2?|ttf|otf|wav|mp3|ogg)$/i.test(p)).map(([p,b])=>[p,dataUrl(b,p)])),preferences:themePayload(ui)},'*');}
+  if(loaded&&d.type==='request'&&typeof d.id==='string'&&d.id.length<=64&&typeof d.op==='string'&&requests<8){
+   requests++;const reply=(result,error)=>{if(mountedFrame===frame)frame.contentWindow.postMessage({source:'caixota-host',type:'response',id:d.id,result,error},'*');};
+   api.request(d.op,d.data).then(r=>reply(r),e=>reply(null,String(e.message||e))).finally(()=>requests--);
+  }
+  if(d.type==='ready'&&!loaded){loaded=true;frame.contentWindow.postMessage({source:'caixota-host',type:'load',engines,engineFiles,html:new TextDecoder().decode(pkg.assets[item.file]),assets:Object.fromEntries(Object.entries(pkg.assets).filter(([p])=>/\.(png|jpg|jpeg|webp|woff2?|ttf|otf|wav|mp3|ogg)$/i.test(p)).map(([p,b])=>[p,dataUrl(b,p)])),preferences:themePayload(ui)},'*');}
   if(d.type==='loaded')document.getElementById('moduleRuntimeStatus')?.remove();
   if(d.type==='error'){let n=document.getElementById('moduleRuntimeStatus');if(!n){n=document.createElement('p');n.id='moduleRuntimeStatus';n.setAttribute('role','alert');frame.before(n);}n.textContent='Não foi possível executar: '+String(d.message).slice(0,200);}
   if(d.type==='height'&&Number.isFinite(d.height))frame.style.height=Math.max(200,Math.min(16000,d.height))+'px';

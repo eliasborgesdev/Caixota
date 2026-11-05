@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts, degrees, rgb } from "./vendor/pdf-lib.esm.min.mjs";
+import { PDFDocument, StandardFonts, degrees, rgb } from "../vendor/pdf-lib.esm.min.mjs";
 
 export const PDF_MIME = "application/pdf";
 export const MAX_PDF_FILE_BYTES = 150 * 1024 * 1024;

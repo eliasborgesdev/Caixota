@@ -25,8 +25,8 @@ const P={
  'Sorteio':['Random draws','Auslosung','Sorteos','Tirages','Sorteggi','Loting'],
  'Configurações':['Settings','Einstellungen','Configuración','Paramètres','Impostazioni','Instellingen'],
  'Apoiar a Caixota':['Support Caixota','Caixota unterstützen','Apoyar Caixota','Soutenir Caixota','Sostieni Caixota','Steun Caixota'],
- 'Perfil':['Profile','Profil','Perfil','Profil','Profilo','Profiel'],
- 'Meu perfil':['My profile','Mein Profil','Mi perfil','Mon profil','Il mio profilo','Mijn profiel'],
+ 
+ 
  'Biblioteca':['Library','Bibliothek','Biblioteca','Bibliothèque','Biblioteca','Bibliotheek'],
  'BIBLIOTECA':['LIBRARY','BIBLIOTHEK','BIBLIOTECA','BIBLIOTHÈQUE','BIBLIOTECA','BIBLIOTHEEK'],
  'ESPAÇO DE TRABALHO':['WORKSPACE','ARBEITSBEREICH','ESPACIO DE TRABAJO','ESPACE DE TRAVAIL','AREA DI LAVORO','WERKRUIMTE'],
@@ -57,7 +57,7 @@ const P={
  'INÍCIO':['HOME','START','INICIO','ACCUEIL','HOME','START'],
  'NOVIDADE':['NEW','NEU','NUEVO','NOUVEAU','NUOVO','NIEUW'],
  'Ferramentas reais':['Real tools','Echte Werkzeuge','Herramientas reales','Vrais outils','Strumenti reali','Echte hulpmiddelen'],
- 'Editar perfil':['Edit profile','Profil bearbeiten','Editar perfil','Modifier le profil','Modifica profilo','Profiel bewerken'],
+ 
  'DO SEU JEITO':['YOUR WAY','DEIN STIL','A TU MANERA','À VOTRE FAÇON','A MODO TUO','OP JOUW MANIER'],
  'Aparência':['Appearance','Aussehen','Apariencia','Apparence','Aspetto','Uiterlijk'],
  'Desempenho':['Performance','Leistung','Rendimiento','Performances','Prestazioni','Prestaties'],
@@ -147,8 +147,8 @@ const otherTranslations={
 'Entretenimento':['エンタメ','娱乐'],'Texto':['テキスト','文本'],'Imagens':['画像','图像'],'Vídeo':['動画','视频'],
 'PDF':['PDF','PDF'],'Geradores':['ジェネレーター','生成器'],'Utilitários':['便利ツール','实用工具'],
 'Jogos':['ゲーム','游戏'],'Sorteio':['抽選','抽签'],'Configurações':['設定','设置'],
-'Apoiar a Caixota':['Caixota を応援','支持 Caixota'],'Perfil':['プロフィール','个人资料'],
-'Meu perfil':['マイプロフィール','我的资料'],'Biblioteca':['ライブラリ','工具库'],
+'Apoiar a Caixota':['Caixota を応援','支持 Caixota'],
+'Biblioteca':['ライブラリ','工具库'],
 'BIBLIOTECA':['ライブラリ','工具库'],'ESPAÇO DE TRABALHO':['ワークスペース','工作区'],
 'Busque qualquer ferramenta...':['ツールを検索...','搜索工具...'],'Buscar no catálogo':['一覧から探す','搜索工具库'],
 'Pesquisar por nome, função ou palavra-chave...':['名前やキーワードで検索...','按名称或关键词搜索...'],
@@ -163,7 +163,7 @@ const otherTranslations={
 'O que vamos fazer hoje?':['今日は何をする？','今天想做什么？'],
 'O que há na Caixota':['Caixota の新着情報','Caixota 新功能'],
 'NOVIDADE':['新着','新功能'],'INÍCIO':['ホーム','首页'],
-'Editar perfil':['プロフィールを編集','编辑个人资料'],
+
 'Aparência':['外観','外观'],'Desempenho':['パフォーマンス','性能'],
 'Comportamento':['操作設定','行为设置'],'Idioma e região':['言語と地域','语言与地区'],
 'Ferramentas e módulos':['ツールとモジュール','工具与模块'],
@@ -238,10 +238,12 @@ const specific={
  'Descubra as novidades da Caixota':['Discover what’s new in Caixota','Neuigkeiten entdecken','Descubre las novedades','Découvrez les nouveautés','Scopri le novità','Ontdek het nieuws','Caixota の新着情報を見る','探索 Caixota 新功能'],
 };
 
+const updatePhrases={"Experimental": ["Experimental", "Experimental"], "As ferramentas de IA são experimentais. Podem falhar ou dar respostas incorretas. Confira as informações em fontes confiáveis antes de usar a resposta.": ["These AI tools are experimental. They may fail or give incorrect answers. Check reliable sources before relying on a response.", "Las herramientas de IA son experimentales. Pueden fallar o dar respuestas incorrectas. Consulta fuentes fiables antes de usar la respuesta."], "Selecionar arquivo ZIP": ["Choose ZIP file", "Elegir archivo ZIP"], "Solte o ZIP aqui": ["Drop the ZIP here", "Suelta el ZIP aquí"], "Selecionados": ["Selected", "Seleccionados"], "Antes de instalar": ["Before you install", "Antes de instalar"], "Instale apenas de fontes confiáveis.": ["Only install from trusted sources.", "Instala solo desde fuentes fiables."], "Módulos são pacotes externos que adicionam funções à Caixota. Ferramentas e jogos de um módulo podem executar código. Confirme a origem do ZIP e evite fornecer dados sensíveis a módulos desconhecidos.": ["Modules are external packages that add features to Caixota. Their tools and games can run code. Verify where the ZIP came from and avoid sharing sensitive data with unknown modules.", "Los módulos son paquetes externos que añaden funciones a Caixota. Sus herramientas y juegos pueden ejecutar código. Comprueba el origen del ZIP y evita compartir datos sensibles con módulos desconocidos."], "Revise os conteúdos do pacote e instale somente módulos de fontes confiáveis.": ["Review the package contents and only install modules from trusted sources.", "Revisa el contenido del paquete e instala solo módulos de fuentes fiables."], "Voltar à seleção": ["Back to selection", "Volver a la selección"], "Confirmar instalação": ["Confirm installation", "Confirmar instalación"], "Instalando…": ["Installing…", "Instalando…"], "Até 64 MB por ZIP. O pacote deve conter caixota-module.json no formato 0.1.1.": ["Up to 64 MB per ZIP. The package must include caixota-module.json in the 0.1.1 format.", "Hasta 64 MB por ZIP. El paquete debe incluir caixota-module.json en formato 0.1.1."]};
 const codeIndex={en:0,de:1,es:2,fr:3,it:4,nl:5};
 function localized(original,lang){
  if(lang==='pt')return original;
  if(lang==='esd')return 'Jez élska dzju';
+ if(updatePhrases[original])return updatePhrases[original][lang==='es'?1:0];
  if(finalPhrases[original]?.[lang])return finalPhrases[original][lang];
  if(releasePhrases[original]?.[lang])return releasePhrases[original][lang];
  if(additionalLanguages[lang]?.[original])return additionalLanguages[lang][original];
@@ -274,7 +276,7 @@ const textSources=new WeakMap(),attributeSources=new WeakMap();
 const skipTags=new Set(['SCRIPT','STYLE','TEXTAREA','CODE','PRE','SVG']);
 export function translateShell(root=document,lang='pt'){
  document.documentElement.lang=lang==='pt'?'pt-BR':lang==='zh'?'zh-CN':lang==='esd'?'x-esd':lang;
- const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){if(!node.parentElement)return NodeFilter.FILTER_REJECT;const p=node.parentElement;if(p.closest('[data-no-translate],[contenteditable],.cx-profile-cover,.cx-avatar,.cx-word-result,.cx-termo-boards'))return NodeFilter.FILTER_REJECT;if(skipTags.has(p.tagName)||p.closest('svg'))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
+ const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){if(!node.parentElement)return NodeFilter.FILTER_REJECT;const p=node.parentElement;if(p.closest('[data-no-translate],[contenteditable],.cx-word-result,.cx-termo-boards'))return NodeFilter.FILTER_REJECT;if(skipTags.has(p.tagName)||p.closest('svg'))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
  const nodes=[];while(walk.nextNode())nodes.push(walk.currentNode);
  for(const node of nodes){
   const displayed=node.nodeValue,retained=textSources.get(node);

@@ -4,7 +4,7 @@ Este texto descreve o funcionamento observado na Caixota 0.1.0. É uma descriç�
 
 ## O que fica no navegador
 
-Preferências, favoritos, histórico recente, perfil, configurações, dados de jogos, módulos instalados e dados do Player de Música são guardados no armazenamento local da extensão, em `chrome.storage.local` ou IndexedDB. A extensão também guarda o cofre de senhas criptografado localmente. Esses dados não são enviados a um servidor da Caixota por uma função de sincronização: a versão 0.1.0 não possui conta ou backup em nuvem.
+Preferências, favoritos, histórico recente, configurações, dados de jogos, módulos instalados e dados do Player de Música são guardados no armazenamento local da extensão, em `chrome.storage.local` ou IndexedDB. A extensão também guarda o cofre de senhas criptografado localmente. Esses dados não são enviados a um servidor da Caixota por uma função de sincronização: a versão 0.1.0 não possui conta ou backup em nuvem.
 
 No Player de Música, os arquivos importados, nomes, playlists e favoritas ficam no IndexedDB local da extensão. O recurso não oferece streaming nem envia as músicas a um catálogo. A palavra personalizada da Forca é usada na sessão. Conteúdos de módulos permanecem no armazenamento local e são executados em sandbox; a Caixota não comprova a autoria dos módulos.
 
@@ -43,3 +43,9 @@ Um módulo instalado pode conter código de terceiros. O sandbox e a política d
 Limpar os dados do navegador, remover a extensão ou instalar uma cópia com outro ID pode tornar indisponíveis ou apagar dados locais. Mantenha os arquivos originais e faça cópias próprias dos dados que sejam importantes. A Caixota 0.1.0 não sincroniza esses dados com a nuvem.
 
 Consulte também [SECURITY.md](SECURITY.md), [LICENSE.md](LICENSE.md) e [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
+## Categoria IA (0.1.1)
+
+A categoria IA envia ao serviço de IA do Google apenas o texto ou a imagem informados ao executar uma ferramenta. Dicionário inteligente e Explicar também podem enviar o contexto informado ou capturado ao redor da seleção. Verificar pode enviar uma consulta à Wikipédia e ao Brave Search, conforme as fontes configuradas, e usar a busca do Google pelo serviço de IA. A URL da página não é enviada como campo da solicitação. Os atalhos contextuais são opcionais e selecionar um trecho, por si só, não faz uma consulta.
+
+As chaves são salvas no armazenamento local da extensão. A chave da API do Google é enviada ao Google no cabeçalho da requisição; a do Brave é usada para o Brave Search. As respostas ficam em memória durante o uso. Consulte as condições do serviço e as cotas da sua conta antes de usar. A Caixota não controla o tratamento dos dados pelos provedores.

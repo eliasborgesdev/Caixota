@@ -1,7 +1,7 @@
-import {installUiAudio,setUiSoundVolume} from './assets/ux-sounds.mjs';
-import {listModules} from './assets/module-store.mjs';
-import {dataUrl} from './assets/module-host.mjs';
-import {keyOf} from './assets/module-package.mjs';
+import {installUiAudio,setUiSoundVolume} from '../assets/ux-sounds.mjs';
+import {listModules} from '../assets/module-store.mjs';
+import {dataUrl} from '../assets/module-host.mjs';
+import {keyOf} from '../assets/module-package.mjs';
 let enabled=true,theme='oled';
 async function sync(){
  const prefs=(await chrome.storage.local.get('caixotaUiV3')).caixotaUiV3||{};

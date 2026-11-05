@@ -6,7 +6,7 @@ import path from 'node:path';
 import {ReadableStream} from 'node:stream/web';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const source=fs.readFileSync(path.join(root,'background.js'),'utf8');
+const source=fs.readFileSync(path.join(root,'scripts/background.js'),'utf8');
 const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.json'),'utf8'));
 assert.equal(manifest.version,'0.3.18');
 const extract=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end,source.indexOf(start)));

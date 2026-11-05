@@ -7,8 +7,8 @@ const read=x=>readFileSync(new URL('../'+x,import.meta.url),'utf8');
 const manifest=JSON.parse(read('manifest.json'));
 assert.equal(manifest.version,'0.3.18');
 assert.equal(manifest.content_scripts.length,3);
-assert(manifest.content_scripts.some(x=>x.js?.includes('page-features.js')));
-assert(manifest.content_scripts.some(x=>x.js?.includes('instagram-progress.js') && x.matches[0]==='https://www.instagram.com/*'));
+assert(manifest.content_scripts.some(x=>x.js?.includes('scripts/page-features.js')));
+assert(manifest.content_scripts.some(x=>x.js?.includes('scripts/instagram-progress.js') && x.matches[0]==='https://www.instagram.com/*'));
 assert.equal(DEFAULT_UI.organizeSidebar,true);
 assert.equal(normalizeUi({organizeSidebar:false}).organizeSidebar,false);
 assert.equal(normalizeUi({}).organizeSidebar,true);
@@ -18,11 +18,11 @@ const dummyIcon=()=>'<svg></svg>';
 assert(browserFeatureMarkup('pip',{pip:false},dummyIcon).includes('aria-checked="false"'));
 assert(browserFeatureMarkup('instagramProgress',{instagramProgress:true},dummyIcon).includes('aria-checked="true"'));
 assert(browserFeatureMarkup('darkPage',{},dummyIcon).includes('botão direito'));
-const shell=read('shell.js');
+const shell=read('scripts/shell.js');
 for(const tool of ['utility-pip','utility-instagram-progress','utility-dark-page']) assert(shell.includes(`id:'${tool}'`));
 assert(shell.includes('data-action="toggle-organize-sidebar"'));
 assert(shell.includes('state.ui.organizeSidebar===false?[...WORK_CATEGORIES,...FUN_CATEGORIES]'));
-const bg=read('background.js');
+const bg=read('scripts/background.js');
 assert(bg.includes("id:'caixota-force-dark'")&&bg.includes("id:'caixota-restore-light'"));
 assert(bg.includes('chrome.storage.session'));
 assert(bg.includes('new URL(tab.url).origin===saved.origin'));
@@ -37,7 +37,7 @@ const doc={documentElement:root,visibilityState:'visible',pictureInPictureEnable
  addEventListener(n,fn){listeners['document:'+n]=fn;},removeEventListener(){},querySelectorAll:()=>[],getElementById:()=>null};
 const chrome={storage:{local:{get:async()=>({[FEATURE_STORAGE_KEY]:{pip:false}})},onChanged:{addListener(fn){storedChange=fn;}}},runtime:{onMessage:{addListener(fn){listeners.message=fn;}}}};
 const context={chrome,document:doc,navigator:{mediaSession:{setActionHandler:(n,fn)=>installedPiPAction=fn}},window:{addEventListener(n,fn){listeners['window:'+n]=fn;}},setTimeout,clearTimeout,Date,console};
-vm.runInNewContext(read('page-features.js'),context,{filename:'page-features.js'});
+vm.runInNewContext(read('scripts/page-features.js'),context,{filename:'scripts/page-features.js'});
 let result;listeners.message({type:'CAIXOTA_PAGE_DARK_0310',enabled:true},{},(v)=>result=v);
 assert(result.ok&&result.enabled);assert(classes.has('cx0310-force-dark'));
 listeners.message({type:'CAIXOTA_PAGE_DARK_0310',enabled:false},{},v=>result=v);
@@ -50,14 +50,14 @@ console.log('OK 0.3.10: menu escuro liga/desliga, flags desligadas por padrão, 
 // The Instagram bar now lives above the player in its own fixed root,
 // not inside the video's wrapper. Browser-level pointer tests live in
 // tests/browser-instagram.py (Playwright, isolated fake video).
-const ig=read('instagram-progress.js');
+const ig=read('scripts/instagram-progress.js');
 const style=read('instagram-progress.css');
 assert(ig.includes("document.documentElement.appendChild(root)"));
 assert(ig.includes("bar.setPointerCapture(event.pointerId)"));
 assert(ig.includes("activeVideo.currentTime = desired"));
 assert(ig.includes("timestamp(current)") && ig.includes("timestamp(total)"));
 assert(style.includes('cx-ig-thumb') && style.includes('cx-ig-time'));
-assert(!read('page-features.js').includes('cx0310-pip-chip'));
+assert(!read('scripts/page-features.js').includes('cx0310-pip-chip'));
 assert(!read('page-features.css').includes('cx0310-pip-chip'));
 assert(!read('assets/browser-features.mjs').includes('botão PiP que aparece sobre o vídeo'));
 console.log('OK 0.3.10.1: barra externa interativa e PiP sem botão sobre o player.');

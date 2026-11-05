@@ -5,7 +5,7 @@
   let pending=null;
   let activeLanguage='pt';
   let toolObserver=null,toolMutationObserver=null,resizeHandle=0,activeToolId=null,lastContentHeight=0;
-  const measurement = import('./assets/workbench-size.mjs');
+  const measurement = import('../assets/workbench-size.mjs');
   const sendContentHeight=async()=>{
     resizeHandle=0;
     const toolId=activeToolId;
@@ -35,7 +35,7 @@
     scheduleResize();setTimeout(scheduleResize,160);setTimeout(scheduleResize,650);
   }
   async function translateTool(){
-    try{const mod=await import('./assets/shell-locale.mjs');mod.translateShell(document.querySelector('.app-main')||document.body,activeLanguage);}catch(error){console.warn('Caixota: não foi possível traduzir estes rótulos.',error);}
+    try{const mod=await import('../assets/shell-locale.mjs');mod.translateShell(document.querySelector('.app-main')||document.body,activeLanguage);}catch(error){console.warn('Caixota: não foi possível traduzir estes rótulos.',error);}
   }
   async function open(category,toolId){
     if(!category||!toolId)return;

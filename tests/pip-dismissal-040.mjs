@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 
-const source=readFileSync(new URL('../page-features.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../scripts/page-features.js',import.meta.url),'utf8');
 const KEY='caixotaBrowserFeatures0310';
 
 async function startPage(){
@@ -26,7 +26,7 @@ async function startPage(){
     window:{addEventListener(name,fn){listeners['window:'+name]=fn;},removeEventListener(){}},
     Date,console,
   };
-  vm.runInNewContext(source,context,{filename:'page-features.js'});
+  vm.runInNewContext(source,context,{filename:'scripts/page-features.js'});
   await Promise.resolve();await Promise.resolve();
   onStorageChange({[KEY]:{newValue:{pip:true}}},'local');
   listeners['window:blur']();

@@ -3,7 +3,7 @@ import {readFileSync} from 'node:fs';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const {chromium}=require('playwright');
-const script=readFileSync(new URL('../page-features.js',import.meta.url),'utf8');
+const script=readFileSync(new URL('../scripts/page-features.js',import.meta.url),'utf8');
 const browser=await chromium.launch({
   executablePath:process.env.CAIXOTA_CHROMIUM||'/workspace/scratch/1890ef31a4d1/tests/browser/chromium',
   headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu'],

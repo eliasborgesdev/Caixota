@@ -4,15 +4,15 @@ Este roteiro prepara o repositório e uma release manual. O pacote não foi envi
 
 ## Primeiro: entenda o limite da licença
 
-A licença da Caixota permite baixar e usar a versão oficial, mas restringe redistribuição e publicação de versões modificadas. Ela é uma licença própria de código consultável, **não** uma licença open source aprovada pela OSI.
+A licença própria permite modificar e redistribuir a Caixota para fins não comerciais, sob as condições de créditos, doações e indicação do projeto original descritas em `LICENSE.md`.
 
 O GitHub informa que, quando você publica código em um repositório público, outros usuários podem visualizá-lo e bifurcá-lo (fork) conforme os Termos de Serviço. Por isso, o botão de fork e as cópias criadas dentro da plataforma não podem ser impedidos só escrevendo uma restrição no `LICENSE.md`. Veja a documentação oficial: [Licenciamento de um repositório](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository) e [Como criar um fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo).
 
-Publique como **código consultável com licença restritiva**, sem chamar de “open source” ou prometer que ninguém poderá fazer fork. Se essa limitação não serve ao objetivo do projeto, mantenha o repositório privado ou decida outra licença antes de torná-lo público. Este texto não substitui orientação jurídica.
+
 
 ## 1. Prepare a pasta do repositório
 
-1. Baixe o arquivo `caixota-v0.1.0.zip` entregue com este roteiro.
+1. Baixe o arquivo `caixota-v0.1.1.zip` entregue com este roteiro.
 2. Extraia-o numa pasta de trabalho, por exemplo `Caixota`.
 3. Confira que `README.md`, `LICENSE.md`, `PRIVACY.md`, `SECURITY.md`, `THIRD-PARTY-NOTICES.md` e `manifest.json` estão na raiz.
 4. Revise [docs/REVISAO-SEGURANCA-0.1.0.md](REVISAO-SEGURANCA-0.1.0.md), principalmente o acesso amplo a páginas.
@@ -55,7 +55,7 @@ Depois do envio, abra a página do repositório. O GitHub exibirá o `README.md`
 2. Crie a tag `v0.1.0`, apontando para `main`.
 3. Título sugerido: **Caixota 0.1.0 — módulos, PSX/VHS, jogos e Player de Música**.
 4. Cole o texto de `RELEASE-NOTES-0.1.0.md` na descrição.
-5. Anexe `caixota-v0.1.0.zip`, `caixota-testes-1.0.0.zip` e `SHA256SUMS.txt` como arquivos da release. O GitHub permite anexar arquivos a uma release; consulte [About releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
+5. Anexe `caixota-v0.1.1.zip`, `caixota-testes-1.0.0.zip` e `SHA256SUMS.txt` como arquivos da release. O GitHub permite anexar arquivos a uma release; consulte [About releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
 6. Deixe **pre-release** desmarcado se esta for a versão estável que você quer anunciar.
 7. Confira os nomes dos dois arquivos e publique.
 
@@ -64,7 +64,7 @@ Depois do envio, abra a página do repositório. O GitHub exibirá o `README.md`
 - Em **Settings → Code security and analysis**, habilite **Private vulnerability reporting** antes de divulgar `SECURITY.md` como canal de relato.
 - Ative proteção contra exclusão/force push da branch principal se estiver disponível no plano da conta.
 - Mantenha `LICENSE.md`, avisos de terceiros e a explicação de permissões visíveis na raiz.
-- Não ative “Open source” em descrições ou badges enquanto a licença continuar proibindo redistribuição e versões modificadas.
+
 
 ## 6. Checagem após publicar
 
